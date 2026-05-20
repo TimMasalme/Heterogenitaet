@@ -130,3 +130,8 @@ async function retrySubmit() {
       "Erneuter Fehler: " + (err.message || "Bitte Verbindung prüfen.");
   }
 }
+
+// ─── Auto Start ───────────────────────────────
+window.addEventListener("DOMContentLoaded", () => {
+  startTest();
+});

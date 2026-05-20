@@ -4,7 +4,7 @@
 
 /* ─── PROGRESS BAR ───────────────────────────── */
 .progress-bar-wrap {
-  height: 4px;
+  height: 3px;
   background: var(--border);
 }
 
@@ -13,6 +13,7 @@
   background: linear-gradient(90deg, var(--rub-blue) 0%, var(--rub-lime) 100%);
   transition: width .5s cubic-bezier(.4,0,.2,1);
   width: 0%;
+  box-shadow: 0 0 14px rgba(163,203,56,.4);
 }
 
 /* ─── SCREENS ────────────────────────────────── */
@@ -240,4 +241,74 @@
 /* ─── RESPONSIVE ─────────────────────────────── */
 @media (max-width: 600px) {
   .intro-card, .question-layout, .done-card { padding: 28px 20px; }
+}
+
+.site-header {
+  background: var(--rub-blue);
+  color: white;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(10px);
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo-mark {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.2rem;
+  letter-spacing: .08em;
+}
+
+.course-tag {
+  font-size: .82rem;
+  opacity: .82;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+body.test-page {
+  background:
+    radial-gradient(circle at top left,
+      rgba(0,103,120,.08),
+      transparent 30%),
+    linear-gradient(to bottom,
+      #f7f9fb,
+      #eef3f6);
+}
+
+.question-layout {
+  backdrop-filter: blur(14px);
+  background: rgba(255,255,255,.92);
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+.option-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.option-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0,103,120,.05),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+.option-btn:hover::before {
+  opacity: 1;
 }
