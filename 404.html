@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 · LdL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="meta/components/components.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; font-family: 'DM Sans', sans-serif; }
+
+    body {
+      background: #03111c;
+      color: #fff;
+      min-height: 100vh;
+      padding-top: 66px;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 15% 10%, rgba(0,103,120,.22) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #app-topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 200; }
+    #app-footer { position: relative; z-index: 1; }
+
+    .screen {
+      position: relative;
+      z-index: 1;
+      min-height: calc(100vh - 66px - 49px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+      text-align: center;
+    }
+
+    .num {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(9rem, 25vw, 16rem);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -.04em;
+      color: rgba(255,255,255,.04);
+      margin-bottom: -24px;
+      user-select: none;
+    }
+
+    .label {
+      font-size: .7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .2em;
+      color: rgba(255,255,255,.28);
+      margin-bottom: 16px;
+    }
+
+    .title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 400;
+      color: rgba(255,255,255,.8);
+      margin-bottom: 40px;
+      line-height: 1.15;
+    }
+
+    .title em { font-style: italic; color: #8dae10; }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px;
+      padding: 18px 36px;
+      color: rgba(255,255,255,.75);
+      text-decoration: none;
+      font-size: .88rem;
+      font-weight: 500;
+      letter-spacing: .03em;
+      transition: background .2s, border-color .2s, transform .18s, color .2s;
+    }
+
+    .back:hover {
+      background: rgba(255,255,255,.1);
+      border-color: rgba(255,255,255,.22);
+      color: #fff;
+      transform: translateY(-3px);
+    }
+
+    .back-arrow {
+      width: 20px;
+      height: 1px;
+      background: currentColor;
+      position: relative;
+      transition: width .18s;
+    }
+
+    .back-arrow::before {
+      content: '';
+      position: absolute;
+      left: 0; top: -3px;
+      width: 7px; height: 7px;
+      border-left: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: rotate(45deg);
+    }
+
+    .back:hover .back-arrow { width: 28px; }
+  </style>
+</head>
+<body>
+
+  <div id="app-topbar"></div>
+
+  <div class="screen">
+    <div class="num" aria-hidden="true">404</div>
+    <p class="label">Seite nicht gefunden</p>
+    <h1 class="title">Diese Seite<br><em>existiert nicht.</em></h1>
+    <a href="index.html" class="back">
+      <span class="back-arrow"></span>
+      Zurück zur Startseite
+    </a>
+  </div>
+
+  <div id="app-footer"></div>
+
+  <script src="meta/components/components.js"></script>
+</body>
+</html>
