@@ -3,71 +3,69 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LdL Auswertung · Heterogenität</title>
+  <title>LdL · Auswertung · Heterogenität</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../meta/styles.css" />
+  <link rel="stylesheet" href="../../meta/components/components.css" />
   <link rel="stylesheet" href="stats.css" />
 </head>
-<body class="stats-page">
+<body class="app-shell stats-page">
 
-  <!-- Header -->
-  <header class="site-header stats-header">
-    <div class="header-inner">
-      <span class="logo-mark">LdL</span>
-      <span class="course-tag">Auswertung · Heterogenität an Schulen</span>
-      <div class="live-indicator" id="liveIndicator">
-        <span class="live-dot"></span>
-        <span>Live</span>
-      </div>
-    </div>
-  </header>
+  <div id="app-topbar"></div>
 
-  <!-- Loading -->
-  <main class="stats-main" id="statsMain">
-    <div class="loading-state" id="loadingState">
-      <div class="spinner"></div>
-      <p>Lade Ergebnisse…</p>
-    </div>
+  <div class="layout">
+    <div class="sidebar-slot"></div>
 
-    <!-- Content (hidden until loaded) -->
-    <div id="statsContent" class="hidden">
+    <main class="content">
+      <div class="content-inner">
 
-      <!-- KPI Row -->
-      <div class="kpi-row" id="kpiRow"></div>
+        <div class="loading-state" id="loadingState">
+          <div class="spinner"></div>
+          <p>Lade Ergebnisse…</p>
+        </div>
 
-      <!-- Per-Question Breakdown -->
-      <section class="section">
-        <h2 class="section-title">Fragen im Überblick</h2>
-        <p class="section-sub">Lösungsquote pro Frage – Rot = Handlungsbedarf</p>
-        <div class="q-breakdown" id="qBreakdown"></div>
-      </section>
+        <div id="statsContent" class="hidden">
+          <div class="kpi-row" id="kpiRow"></div>
 
-      <!-- Per-Theme Breakdown -->
-      <section class="section">
-        <h2 class="section-title">Themengebiete</h2>
-        <p class="section-sub">Welche LdL-Gruppe hat gut erklärt?</p>
-        <div class="theme-grid" id="themeGrid"></div>
-      </section>
+          <section class="section">
+            <h2 class="section-title">Gesamtübersicht</h2>
+            <div class="card chart-card">
+              <div class="chart-legend">
+                <span class="legend-dot dot-correct"></span> Richtig
+                <span class="legend-dot dot-wrong"></span> Falsch
+                <span class="legend-dot dot-total"></span> Gesamt
+              </div>
+              <div class="chart-wrap" id="bigChart"></div>
+            </div>
+          </section>
 
-      <!-- Answer Distribution -->
-      <section class="section">
-        <h2 class="section-title">Antwortverteilung</h2>
-        <p class="section-sub">Häufigste Fehlvorstellungen pro Frage sichtbar machen</p>
-        <div class="distrib-list" id="distribList"></div>
-      </section>
+          <section class="section">
+            <h2 class="section-title">Fragen im Detail</h2>
+            <div id="qBreakdown"></div>
+          </section>
 
-      <!-- Reset -->
-      <div class="reset-row">
-        <button class="btn-reset" onclick="confirmReset()">Alle Ergebnisse löschen</button>
-        <span class="reset-hint">Für neue Kursrunde zurücksetzen</span>
-      </div>
+          <section class="section">
+            <h2 class="section-title">Themengebiete</h2>
+            <div class="theme-grid" id="themeGrid"></div>
+          </section>
 
-    </div>
-  </main>
+          <section class="section">
+            <h2 class="section-title">Antwortverteilung</h2>
+            <p class="section-hint">Hover über einen Buchstaben für den vollständigen Antworttext</p>
+            <div id="distribList"></div>
+          </section>
+        </div><!-- /statsContent -->
+
+      </div><!-- /content-inner -->
+    </main>
+  </div>
+
+  <div id="app-footer"></div>
 
   <script type="module" src="../../meta/firebase.js"></script>
   <script src="../../meta/questions.js"></script>
   <script src="stats.js"></script>
+  <script src="../../meta/components/components.js"></script>
 </body>
 </html>

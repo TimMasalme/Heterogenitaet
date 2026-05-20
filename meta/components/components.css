@@ -1,0 +1,331 @@
+/* =============================================
+   meta/components/components.css
+   Topbar (fixed), Sidebar, Footer, Toast
+   ============================================= */
+
+/* ─── TOPBAR ──────────────────────────────────── */
+
+/* Fixed so sticky works regardless of flex/scroll context */
+#app-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+}
+
+.topbar {
+  height: 66px;
+  background: #003560;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 28px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,.18);
+}
+
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.topbar .logo-mark {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.25rem;
+  background: white;
+  color: #003560;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: .3px;
+  line-height: 1;
+  transition: opacity .15s;
+}
+
+.topbar-logo:hover .logo-mark { opacity: .85; }
+
+.topbar-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.topbar-title {
+  font-size: .92rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar-sub {
+  font-size: .72rem;
+  opacity: .6;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Wissen/Üben tabs (nur learn.html) */
+.topbar-tabs {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.topbar-tab {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.28);
+  color: rgba(255,255,255,.72);
+  padding: 7px 18px;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+  white-space: nowrap;
+}
+
+.topbar-tab:hover {
+  background: rgba(255,255,255,.1);
+  color: white;
+}
+
+.topbar-tab.active {
+  background: white;
+  color: #003560;
+  border-color: white;
+  font-weight: 600;
+}
+
+/* Live-Bereich (nur stats.html) */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.live-dot-anim {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #6ee7b7;
+  animation: livePulse 1.8s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: .5; transform: scale(1.35); }
+}
+
+.live-label-text {
+  font-size: .75rem;
+  color: #6ee7b7;
+  font-weight: 600;
+}
+
+.btn-topbar-danger {
+  border: 1px solid rgba(255,255,255,.35);
+  background: transparent;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .78rem;
+  font-weight: 500;
+  transition: background .18s, border-color .18s;
+  white-space: nowrap;
+}
+
+.btn-topbar-danger:hover {
+  background: rgba(255,255,255,.12);
+  border-color: rgba(255,255,255,.6);
+}
+
+/* ─── LAYOUT SHELL ────────────────────────────── */
+
+/* 66px top padding compensates for fixed topbar */
+.app-shell {
+  margin: 0;
+  padding-top: 66px;
+  background: #f5f7f9;
+  color: #13212c;
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 224px 1fr;
+  min-height: calc(100vh - 66px);
+}
+
+/* ─── SIDEBAR ─────────────────────────────────── */
+
+.sidebar {
+  background: white;
+  border-right: 1px solid #e5e9ee;
+  padding: 24px 16px;
+  position: sticky;
+  top: 66px;
+  height: calc(100vh - 66px);
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #41505f;
+  font-size: .875rem;
+  font-weight: 500;
+  transition: background .15s, color .15s;
+  cursor: pointer;
+  border: none;
+  background: none;
+  text-align: left;
+  width: 100%;
+}
+
+.nav-item:hover   { background: #f3f7fb; }
+.nav-item.active  { background: rgba(0,103,120,.09); color: #006778; }
+
+.nav-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  width: 1.5rem;
+  text-align: center;
+}
+
+.nav-label {
+  font-size: .88rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.nav-sub {
+  font-size: .72rem;
+  color: #9aa4ae;
+  margin-top: 1px;
+  line-height: 1;
+}
+
+.nav-item.active .nav-sub { color: #5da9b3; }
+
+.sidebar-divider {
+  height: 1px;
+  background: #e5e9ee;
+  margin: 16px 0;
+}
+
+.sidebar-section-label {
+  font-size: .67rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: #8a96a3;
+  padding: 0 14px;
+  margin-bottom: 6px;
+  margin-top: 4px;
+}
+
+/* ─── FOOTER ──────────────────────────────────── */
+
+.site-footer {
+  background: white;
+  border-top: 1px solid #e5e9ee;
+  padding: 14px 28px;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: .78rem;
+  color: #8a96a3;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-nav {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-nav a {
+  color: #8a96a3;
+  text-decoration: none;
+  font-size: .78rem;
+  transition: color .15s;
+}
+
+.footer-nav a:hover { color: #006778; }
+
+/* ─── GLOBAL TOAST ────────────────────────────── */
+
+.global-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #13212c;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-size: .88rem;
+  font-family: 'DM Sans', sans-serif;
+  box-shadow: 0 8px 28px rgba(0,0,0,.22);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s, transform .25s;
+  white-space: nowrap;
+}
+
+.global-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.global-toast.success { background: #2D7A4F; }
+.global-toast.error   { background: #C1440E; }
+
+/* ─── RESPONSIVE ──────────────────────────────── */
+
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .topbar  { padding: 0 16px; gap: 12px; }
+  .topbar-sub { display: none; }
+  .footer-nav { display: none; }
+}
+
+.content-inner {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 48px 40px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .content-inner { padding: 28px 20px; }
+}

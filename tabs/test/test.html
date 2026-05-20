@@ -3,60 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LdL-Test · Heterogenität</title>
+  <title>LdL · Kurstest · Heterogenität</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../meta/styles.css" />
+  <link rel="stylesheet" href="../../meta/components/components.css" />
   <link rel="stylesheet" href="test.css" />
 </head>
-<body class="test-page">
+<body class="app-shell">
 
-  <!-- Header -->
-  <header class="site-header">
-    <div class="header-inner">
-      <span class="logo-mark">LdL</span>
-      <span class="course-tag">Heterogenität an Schulen</span>
-    </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-  </header>
+  <div id="app-topbar"></div>
 
-  <!-- Question Screen -->
-  <div class="screen active" id="screenQuestion">
-    <div class="question-layout">
-      <div class="q-meta">
-        <span class="q-counter" id="qCounter">Frage 1 / 8</span>
-        <span class="q-theme" id="qTheme"></span>
-      </div>
-      <h2 class="q-text" id="qText"></h2>
-      <div class="options-grid" id="optionsGrid"></div>
-      <button class="btn-next" id="btnNext" onclick="nextQuestion()" disabled>Weiter →</button>
-    </div>
+  <div class="layout">
+    <div class="sidebar-slot"></div>
+
+    <main class="content">
+      <div class="content-inner">
+
+        <div class="content-grid">
+          <section class="questions-area" id="questionsContainer"></section>
+          <aside class="progress-rail">
+            <div class="progress-label">
+              <span id="progressText">0 / 8</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+          </aside>
+        </div>
+
+        <div class="submit-row">
+          <button class="submit-btn" onclick="submitAll()">Antworten senden</button>
+        </div>
+
+      </div><!-- /content-inner -->
+    </main>
   </div>
 
-  <!-- Done Screen -->
-  <div class="screen" id="screenDone">
-    <div class="done-card">
-      <div class="done-icon">✓</div>
-      <h2>Danke!</h2>
-      <p>Deine Antworten wurden übermittelt.<br />Die Auswertung läuft auf dem Kursbildschirm.</p>
-      <p class="done-sub">Du kannst dieses Fenster schließen.</p>
-    </div>
-  </div>
+  <div id="app-footer"></div>
 
-  <!-- Error Screen -->
-  <div class="screen" id="screenError">
-    <div class="done-card error-card">
-      <div class="done-icon">⚠</div>
-      <h2>Verbindungsfehler</h2>
-      <p id="errorMsg">Die Antworten konnten nicht gespeichert werden.</p>
-      <button class="btn-primary" onclick="retrySubmit()">Erneut versuchen</button>
+  <div class="overlay hidden" id="doneOverlay">
+    <div class="overlay-card">
+      <div class="done-check">✓</div>
+      <h2>Übermittelt</h2>
+      <p>Die Antworten wurden gespeichert.</p>
+      <button class="overlay-btn" onclick="resetTest()">Nochmal mitmachen</button>
     </div>
   </div>
 
   <script type="module" src="../../meta/firebase.js"></script>
   <script src="../../meta/questions.js"></script>
   <script src="test.js"></script>
+  <script src="../../meta/components/components.js"></script>
 </body>
 </html>

@@ -1,137 +1,129 @@
-// =============================================
-//  tabs/test/test.js  –  Logik für test.html
-// =============================================
-
 const SESSION_ID = "s_" + Date.now().toString(36);
-let fragen        = [];
-let aktuell       = 0;
-let antworten     = [];   // { frageId, gewählt, richtig, thema }
-let selectedIndex = null;
-let pendingSubmit = null;
 
-function showScreen(id) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
+let fragen = [];
+let antworten = {};
 
-function updateProgress(step, total) {
-  document.getElementById("progressBar").style.width =
-    ((step / total) * 100) + "%";
-}
+window.addEventListener("DOMContentLoaded", () => {
+  fragen = getKursFragen();
+  renderQuestions();
+  updateProgress();
+});
 
-// ─── Start ────────────────────────────────────
-function startTest() {
-  fragen    = getKursFragen();
-  aktuell   = 0;
-  antworten = [];
-  showScreen("screenQuestion");
-  renderFrage();
-}
+function renderQuestions() {
 
-// ─── Render current question ──────────────────
-function renderFrage() {
-  const f = fragen[aktuell];
-  selectedIndex = null;
+  const container = document.getElementById("questionsContainer");
 
-  document.getElementById("qCounter").textContent =
-    `Frage ${aktuell + 1} / ${fragen.length}`;
-  document.getElementById("qTheme").textContent = f.thema;
-  document.getElementById("qText").textContent  = f.frage;
+  fragen.forEach((f, qIndex) => {
 
-  const grid    = document.getElementById("optionsGrid");
-  grid.innerHTML = "";
+    const block = document.createElement("div");
+    block.className = "question-block";
 
-  const letters = ["A", "B", "C", "D"];
-  f.antworten.forEach((text, i) => {
-    const btn = document.createElement("button");
-    btn.className = "option-btn";
-    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${text}</span>`;
-    btn.onclick   = () => selectOption(i);
-    grid.appendChild(btn);
+    block.innerHTML = `
+      <div class="question-theme">${f.thema}</div>
+      <div class="question-text">
+        ${qIndex + 1}. ${f.frage}
+      </div>
+
+      <div class="options">
+        ${f.antworten.map((a, i) => `
+          <div class="option"
+               onclick="selectAnswer(${qIndex}, ${i}, this)">
+            ${a}
+          </div>
+        `).join("")}
+      </div>
+    `;
+
+    container.appendChild(block);
+
   });
 
-  const btnNext     = document.getElementById("btnNext");
-  btnNext.disabled  = true;
-  btnNext.textContent = aktuell < fragen.length - 1 ? "Weiter →" : "Abschicken ✓";
-
-  updateProgress(aktuell, fragen.length);
 }
 
-// ─── Select an option ─────────────────────────
-function selectOption(index) {
-  const f    = fragen[aktuell];
-  selectedIndex = index;
+function selectAnswer(qIndex, answerIndex, el) {
 
-  const btns = document.querySelectorAll(".option-btn");
-  btns.forEach(b => {
-    b.classList.remove("selected", "correct", "wrong");
-    b.disabled = true;
-  });
+  const parent = el.parentElement;
 
-  btns[f.richtig].classList.add("correct");
-  if (index !== f.richtig) btns[index].classList.add("wrong");
+  const options = parent.querySelectorAll(".option");
 
-  antworten.push({
-    frageId:       f.id,
-    thema:         f.thema,
-    schwierigkeit: f.schwierigkeit,
-    gewählt:       index,
-    richtig:       index === f.richtig
-  });
+  // 👉 Wenn diese Antwort schon gewählt ist → deselect
+  if (antworten[qIndex] === answerIndex) {
 
-  document.getElementById("btnNext").disabled = false;
-}
+    delete antworten[qIndex];
 
-// ─── Next question or submit ──────────────────
-function nextQuestion() {
-  aktuell++;
-  if (aktuell < fragen.length) {
-    renderFrage();
-  } else {
-    updateProgress(fragen.length, fragen.length);
-    submitErgebnisse();
+    options.forEach(o => o.classList.remove("selected"));
+
+    updateProgress();
+    return;
   }
+
+  // 👉 sonst neue Auswahl setzen
+  antworten[qIndex] = answerIndex;
+
+  options.forEach(o => o.classList.remove("selected"));
+  el.classList.add("selected");
+
+  updateProgress();
 }
 
-// ─── Submit to Firestore ──────────────────────
-async function submitErgebnisse() {
-  showScreen("screenDone");
+function updateProgress() {
+
+  const answered = Object.keys(antworten).length;
+  const total = fragen.length;
+
+  document.getElementById("progressText").textContent =
+    `${answered} / ${total}`;
+
+  document.getElementById("progressFill").style.height =
+    `${(answered / total) * 100}%`;
+}
+
+async function submitAll() {
 
   const payload = {
     sessionId: SESSION_ID,
     timestamp: window._serverTimestamp(),
-    antworten,
-    total:   fragen.length,
-    richtig: antworten.filter(a => a.richtig).length
+    antworten: fragen.map((f, i) => ({
+      frageId: f.id,
+      thema: f.thema,
+      gewählt: antworten[i] ?? null,
+      richtig: antworten[i] === f.richtig
+    }))
   };
 
-  pendingSubmit = payload;
-
   try {
-    await window._addDoc(window._collection(window._db, "ergebnisse"), payload);
-    pendingSubmit = null;
-  } catch (err) {
-    console.error("Firestore error:", err);
-    document.getElementById("errorMsg").textContent =
-      "Fehler: " + (err.message || "Unbekannter Fehler");
-    showScreen("screenError");
+
+    await window._addDoc(
+      window._collection(window._db, "ergebnisse"),
+      payload
+    );
+
+    document
+      .getElementById("doneOverlay")
+      .classList.remove("hidden");
+
+  } catch(err) {
+
+    alert("Fehler beim Speichern.");
+
+    console.error(err);
   }
 }
 
-// ─── Retry on error ───────────────────────────
-async function retrySubmit() {
-  if (!pendingSubmit) return;
-  try {
-    await window._addDoc(window._collection(window._db, "ergebnisse"), pendingSubmit);
-    pendingSubmit = null;
-    showScreen("screenDone");
-  } catch (err) {
-    document.getElementById("errorMsg").textContent =
-      "Erneuter Fehler: " + (err.message || "Bitte Verbindung prüfen.");
-  }
-}
+function resetTest() {
+  // Overlay ausblenden
+  document.getElementById("doneOverlay").classList.add("hidden");
 
-// ─── Auto Start ───────────────────────────────
-window.addEventListener("DOMContentLoaded", () => {
-  startTest();
-});
+  // Antworten zurücksetzen
+  antworten = {};
+
+  // Alle selected-Klassen entfernen
+  document.querySelectorAll(".option.selected")
+    .forEach(o => o.classList.remove("selected"));
+
+  // Fortschritt zurücksetzen
+  updateProgress();
+
+  // Seite nach oben scrollen
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}

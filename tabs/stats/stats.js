@@ -1,69 +1,64 @@
-// =============================================
-//  tabs/stats/stats.js  –  Auswertungslogik
-//  Liest alle Ergebnisse aus Firestore (live)
-//  und rendert KPIs, Q-Breakdown, Themen,
-//  Antwortverteilung.
-// =============================================
+/* =============================================
+   stats.js  –  vollständig neu
+   Bugfixes:
+   - Balkendiagramm: 3 echte nebeneinander-Balken
+   - Keine Dopplung zwischen Sektionen
+   - Themengebiete korrekt gerendert
+   ============================================= */
 
 let unsubscribe = null;
 let alleErgebnisse = [];
 
-// Warte bis Firebase-Skript fertig geladen ist
 window.addEventListener("load", () => {
-  // Kleiner Delay damit firebase.js (module) initialisiert ist
-  setTimeout(initStats, 300);
+  setTimeout(initStats, 250);
 });
 
+/* ─── INIT ──────────────────────────────────── */
 function initStats() {
   const db         = window._db;
   const collection = window._collection;
   const onSnapshot = window._onSnapshot;
   const query      = window._query;
 
-  if (!db) {
-    showError("Firebase nicht verfügbar. Bitte Seite neu laden.");
-    return;
-  }
+  if (!db) { showError("Firebase nicht verfügbar"); return; }
 
   const q = query(collection(db, "ergebnisse"));
 
   unsubscribe = onSnapshot(q, (snapshot) => {
-    alleErgebnisse = [];
-    snapshot.forEach(docSnap => {
-      alleErgebnisse.push(docSnap.data());
-    });
+    alleErgebnisse = snapshot.docs.map(d => d.data());
     renderAlles(alleErgebnisse);
   }, (err) => {
-    console.error("Firestore Fehler:", err);
-    showError("Verbindung zu Firebase fehlgeschlagen: " + err.message);
+    showError(err.message);
   });
 }
 
-// ─── Hauptrender ──────────────────────────────
+/* ─── ORCHESTRATE ───────────────────────────── */
 function renderAlles(ergebnisse) {
-  document.getElementById("loadingState").classList.add("hidden");
-  document.getElementById("statsContent").classList.remove("hidden");
+  const loading = document.getElementById("loadingState");
+  const content = document.getElementById("statsContent");
+  if (loading) loading.style.display = "none";
+  if (content) content.classList.remove("hidden");
 
-  const kursFragen = getKursFragen();
+  const kursFragen = window.getKursFragen?.();
+  if (!kursFragen?.length) { showError("Fragen nicht geladen"); return; }
 
-  // Aggregiere pro Frage
-  const fragenStats = aggregiereFragen(ergebnisse, kursFragen);
+  const stats = aggregiere(ergebnisse, kursFragen);
 
-  renderKPIs(ergebnisse, fragenStats, kursFragen);
-  renderQBreakdown(fragenStats, kursFragen);
-  renderThemeGrid(fragenStats, kursFragen);
-  renderDistribList(fragenStats, kursFragen);
+  renderKPIs(ergebnisse, stats, kursFragen);
+  renderBigChart(stats, kursFragen);
+  renderQBreakdown(stats, kursFragen);
+  renderThemen(stats, kursFragen);
+  renderDistrib(stats, kursFragen);
 }
 
-// ─── Aggregation ──────────────────────────────
-function aggregiereFragen(ergebnisse, kursFragen) {
-  // Map: frageId → { richtig: n, gesamt: n, antwortCounts: [0,0,0,0] }
+/* ─── AGGREGATION ───────────────────────────── */
+function aggregiere(ergebnisse, kursFragen) {
   const stats = {};
 
   kursFragen.forEach(f => {
     stats[f.id] = {
-      richtig: 0,
-      gesamt:  0,
+      richtig:       0,
+      gesamt:        0,
       antwortCounts: new Array(f.antworten.length).fill(0)
     };
   });
@@ -71,11 +66,12 @@ function aggregiereFragen(ergebnisse, kursFragen) {
   ergebnisse.forEach(session => {
     if (!session.antworten) return;
     session.antworten.forEach(a => {
-      if (!stats[a.frageId]) return;
-      stats[a.frageId].gesamt++;
-      if (a.richtig) stats[a.frageId].richtig++;
-      if (typeof a.gewählt === "number") {
-        stats[a.frageId].antwortCounts[a.gewählt]++;
+      const s = stats[a.frageId];
+      if (!s) return;
+      s.gesamt++;
+      if (a.richtig) s.richtig++;
+      if (typeof a.gewählt === "number" && a.gewählt >= 0) {
+        s.antwortCounts[a.gewählt]++;
       }
     });
   });
@@ -83,151 +79,207 @@ function aggregiereFragen(ergebnisse, kursFragen) {
   return stats;
 }
 
-// ─── KPI Row ──────────────────────────────────
-function renderKPIs(ergebnisse, fragenStats, kursFragen) {
-  const teilnehmer = ergebnisse.length;
-
-  let gesamtRichtig = 0, gesamtGesamt = 0;
-  kursFragen.forEach(f => {
-    const s = fragenStats[f.id];
-    gesamtRichtig += s.richtig;
-    gesamtGesamt  += s.gesamt;
+/* ─── KPIs ──────────────────────────────────── */
+function renderKPIs(ergebnisse, stats, fragen) {
+  let richtigGesamt = 0, frageGesamt = 0;
+  fragen.forEach(f => {
+    richtigGesamt += stats[f.id].richtig;
+    frageGesamt   += stats[f.id].gesamt;
   });
 
-  const gesamtPct = gesamtGesamt > 0
-    ? Math.round((gesamtRichtig / gesamtGesamt) * 100)
-    : 0;
+  const pct   = frageGesamt ? Math.round((richtigGesamt / frageGesamt) * 100) : 0;
+  const users = ergebnisse.length;
 
-  // Schwächste Frage
-  let minPct = 100, minFrage = null;
-  kursFragen.forEach(f => {
-    const s = fragenStats[f.id];
-    if (s.gesamt === 0) return;
-    const pct = Math.round((s.richtig / s.gesamt) * 100);
-    if (pct < minPct) { minPct = pct; minFrage = f; }
+  // Beste & schwächste Frage
+  let besteIdx = 0, schwächsteIdx = 0, besteP = -1, schwächsteP = 101;
+  fragen.forEach((f, i) => {
+    const s = stats[f.id];
+    const p = s.gesamt ? (s.richtig / s.gesamt) * 100 : 0;
+    if (p > besteP)        { besteP = p;        besteIdx = i; }
+    if (p < schwächsteP)   { schwächsteP = p;   schwächsteIdx = i; }
   });
 
-  const kpis = [
-    { value: teilnehmer,       label: "Teilnehmende",      highlight: false },
-    { value: gesamtPct + "%",  label: "Gesamtergebnis",    highlight: true  },
-    { value: kursFragen.length, label: "Fragen im Test",   highlight: false },
-    { value: minFrage ? (minPct + "%") : "–", label: minFrage ? "Schwächste Frage" : "Noch keine Daten", highlight: false }
-  ];
-
-  const row = document.getElementById("kpiRow");
-  row.innerHTML = kpis.map(k => `
-    <div class="kpi-card ${k.highlight ? "kpi-highlight" : ""}">
-      <span class="kpi-value">${k.value}</span>
-      <span class="kpi-label">${k.label}</span>
+  document.getElementById("kpiRow").innerHTML = `
+    <div class="kpi-card">
+      <div class="kpi-value">${users}</div>
+      <div class="kpi-label">Teilnehmende</div>
     </div>
-  `).join("");
+    <div class="kpi-card">
+      <div class="kpi-value">${pct}%</div>
+      <div class="kpi-label">Gesamt richtig</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color:#2D7A4F">${Math.round(besteP)}%</div>
+      <div class="kpi-label">Beste Frage · F${besteIdx + 1}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color:#C1440E">${Math.round(schwächsteP)}%</div>
+      <div class="kpi-label">Schwächste Frage · F${schwächsteIdx + 1}</div>
+    </div>
+  `;
 }
 
-// ─── Q Breakdown ──────────────────────────────
-function renderQBreakdown(fragenStats, kursFragen) {
-  const container = document.getElementById("qBreakdown");
+/* ─── BALKENDIAGRAMM (FIX) ──────────────────── */
+/*
+   Bug vorher: bar-total, bar-correct, bar-wrong waren
+   gestapelt in einem einzigen 14px Stack (overflow hidden)
+   → nur ein Balken sichtbar, nie volle Höhe.
 
-  container.innerHTML = kursFragen.map((f, i) => {
-    const s   = fragenStats[f.id];
-    const pct = s.gesamt > 0 ? Math.round((s.richtig / s.gesamt) * 100) : null;
+   Fix: 3 echte nebeneinander-Balken (.bar-trio mit flex row).
+   Höhe berechnet sich relativ zum Maximum aller Werte.
+*/
+function renderBigChart(stats, fragen) {
+  const el = document.getElementById("bigChart");
+  if (!el) return;
 
-    const pctClass  = pct === null ? "" : pct >= 70 ? "pct-good" : pct >= 50 ? "pct-ok" : "pct-bad";
-    const barClass  = pct === null ? "bar-green" : pct >= 70 ? "bar-green" : pct >= 50 ? "bar-amber" : "bar-red";
-    const tagText   = pct === null ? "Keine Daten" : pct >= 70 ? "✓ Gut verstanden" : pct >= 50 ? "Noch unsicher" : "Nachsteuerung nötig";
-    const tagClass  = pct !== null && pct >= 70 ? "ok-tag" : "";
-    const pctStr    = pct !== null ? pct + "%" : "–";
-    const barWidth  = pct !== null ? pct : 0;
+  // Maximumwert für Skalierung
+  let max = 0;
+  fragen.forEach(f => {
+    max = Math.max(max, stats[f.id].gesamt);
+  });
+  const scale = Math.max(max, 1);
+  const H = 180; // px Diagrammhöhe
+
+  el.innerHTML = fragen.map((f, i) => {
+    const s   = stats[f.id];
+    const tot = s.gesamt;
+    const cor = s.richtig;
+    const wro = tot - cor;
+    const pct = tot ? Math.round((cor / tot) * 100) : 0;
+
+    // Balkenhöhen in px
+    const hT = Math.round((tot / scale) * H);
+    const hC = Math.round((cor / scale) * H);
+    const hW = Math.round((wro / scale) * H);
+
+    return `
+      <div class="chart-group">
+        <div class="bar-trio">
+          <div class="bar bar-t" style="height:${hT}px" title="Gesamt: ${tot}">
+            ${tot > 0 ? `<span class="bar-val">${tot}</span>` : ''}
+          </div>
+          <div class="bar bar-c" style="height:${hC}px" title="Richtig: ${cor}">
+            ${cor > 0 ? `<span class="bar-val">${cor}</span>` : ''}
+          </div>
+          <div class="bar bar-w" style="height:${hW}px" title="Falsch: ${wro}">
+            ${wro > 0 ? `<span class="bar-val">${wro}</span>` : ''}
+          </div>
+        </div>
+        <div class="chart-label">F${i + 1}</div>
+        <div class="chart-pct">${tot ? pct + '%' : '–'}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ─── FRAGEN DETAIL ─────────────────────────── */
+function renderQBreakdown(stats, fragen) {
+  const el = document.getElementById("qBreakdown");
+  if (!el) return;
+
+  el.innerHTML = fragen.map((f, i) => {
+    const s   = stats[f.id];
+    const pct = s.gesamt ? Math.round((s.richtig / s.gesamt) * 100) : 0;
+
+    const cls = pct >= 70 ? 'high' : pct >= 40 ? 'mid' : 'low';
 
     return `
       <div class="q-row">
-        <div class="q-row-header">
-          <span class="q-num">F${i + 1}</span>
-          <span class="q-label">${f.frage}</span>
-          <span class="q-pct ${pctClass}">${pctStr}</span>
+        <div class="q-num">${i + 1}</div>
+        <div>
+          <div class="q-text">${f.frage}</div>
+          <div class="q-thema">${f.thema} · ${f.schwierigkeit ?? ''}</div>
         </div>
-        <div class="bar-track">
-          <div class="bar-fill ${barClass}" style="width: ${barWidth}%"></div>
+        <div class="q-pct-block">
+          <div class="q-pct-num pct-${cls}">${pct}%</div>
+          <div class="q-pct-label">${s.richtig}/${s.gesamt} richtig</div>
         </div>
-        <span class="q-tag ${tagClass}">${tagText}</span>
-        <span style="font-size:.75rem;color:var(--ink-light);margin-left:8px">${s.gesamt} Antwort${s.gesamt !== 1 ? "en" : ""}</span>
+        <div class="q-bar-track">
+          <div class="q-bar-fill fill-${cls}" style="width:${pct}%"></div>
+        </div>
       </div>
     `;
-  }).join("");
+  }).join('');
 }
 
-// ─── Theme Grid ───────────────────────────────
-function renderThemeGrid(fragenStats, kursFragen) {
-  // Gruppiere nach Thema
+/* ─── THEMENGEBIETE ─────────────────────────── */
+function renderThemen(stats, fragen) {
+  const el = document.getElementById("themeGrid");
+  if (!el) return;
+
+  // Gruppieren nach thema
   const themen = {};
-  kursFragen.forEach(f => {
+  fragen.forEach(f => {
     if (!themen[f.thema]) themen[f.thema] = { richtig: 0, gesamt: 0 };
-    themen[f.thema].richtig += fragenStats[f.id].richtig;
-    themen[f.thema].gesamt  += fragenStats[f.id].gesamt;
+    themen[f.thema].richtig += stats[f.id].richtig;
+    themen[f.thema].gesamt  += stats[f.id].gesamt;
   });
 
-  const grid = document.getElementById("themeGrid");
-  grid.innerHTML = Object.entries(themen).map(([thema, s]) => {
-    const pct = s.gesamt > 0 ? Math.round((s.richtig / s.gesamt) * 100) : null;
-    const pctClass = pct === null ? "" : pct >= 70 ? "pct-good" : pct >= 50 ? "pct-ok" : "pct-bad";
+  el.innerHTML = Object.entries(themen).map(([name, t]) => {
+    const pct = t.gesamt ? Math.round((t.richtig / t.gesamt) * 100) : 0;
+    const cls = pct >= 70 ? 'high' : pct >= 40 ? 'mid' : 'low';
+    const fillColor = cls === 'high' ? '#2D7A4F' : cls === 'mid' ? '#B8860B' : '#C1440E';
+
     return `
       <div class="theme-card">
-        <div class="theme-name">${thema}</div>
-        <div class="theme-pct-big ${pctClass}">${pct !== null ? pct + "%" : "–"}</div>
-        <div class="theme-sub">${s.richtig} / ${s.gesamt} richtig</div>
+        <div class="theme-name">${name}</div>
+        <div class="theme-bar-track">
+          <div class="theme-bar-fill" style="width:${pct}%; background:${fillColor}"></div>
+        </div>
+        <div class="theme-stat">
+          <span>${t.richtig}/${t.gesamt} richtig</span>
+          <span class="pct-${cls}" style="font-weight:600">${pct}%</span>
+        </div>
       </div>
     `;
-  }).join("");
+  }).join('');
 }
 
-// ─── Antwortverteilung ────────────────────────
-function renderDistribList(fragenStats, kursFragen) {
-  const container = document.getElementById("distribList");
-  const letters   = ["A", "B", "C", "D"];
+/* ─── ANTWORTVERTEILUNG ─────────────────────── */
+function renderDistrib(stats, fragen) {
+  const el = document.getElementById("distribList");
+  if (!el) return;
 
-  container.innerHTML = kursFragen.map((f, qi) => {
-    const s      = fragenStats[f.id];
-    const total  = s.gesamt;
+  el.innerHTML = fragen.map((f, i) => {
+    const s     = stats[f.id];
+    const total = Math.max(s.gesamt, 1);
+    const pct   = s.gesamt ? Math.round((s.richtig / s.gesamt) * 100) : 0;
+    const cls   = pct >= 70 ? 'high' : pct >= 40 ? 'mid' : 'low';
 
-    // Welche falsche Antwort ist am häufigsten?
-    let topWrong = -1, topWrongCount = 0;
-    s.antwortCounts.forEach((cnt, idx) => {
-      if (idx !== f.richtig && cnt > topWrongCount) {
-        topWrongCount = cnt;
-        topWrong = idx;
-      }
-    });
-
-    const opts = f.antworten.map((text, idx) => {
-      const cnt      = s.antwortCounts[idx];
-      const pct      = total > 0 ? Math.round((cnt / total) * 100) : 0;
-      const isRight  = idx === f.richtig;
-      const isTop    = idx === topWrong && topWrongCount > 0;
-      const barClass = isRight ? "is-correct" : isTop ? "is-top-wrong" : "is-wrong";
-      const letClass = isRight ? "correct-letter" : "";
+    const opts = s.antwortCounts.map((c, idx) => {
+      const p       = Math.round((c / total) * 100);
+      const isRight = idx === f.richtig;
+      const barCls  = isRight ? 'correct-bar' : (c > 0 ? 'wrong-bar' : '');
+      const letCls  = isRight ? 'correct-answer' : '';
 
       return `
         <div class="distrib-opt">
-          <span class="distrib-letter ${letClass}">${letters[idx]}</span>
-          <div class="distrib-bar-wrap">
-            <div class="distrib-bar ${barClass}" style="width:${pct}%"></div>
+          <div class="distrib-letter ${letCls}" data-tooltip="${f.antworten[idx]}">
+            ${String.fromCharCode(65 + idx)}
           </div>
-          <span class="distrib-n">${cnt}×</span>
+          <div class="distrib-bar-wrap">
+            <div class="distrib-bar-fill ${barCls}" style="width:${p}%"></div>
+          </div>
+          <div class="distrib-n">${c}</div>
         </div>
       `;
-    }).join("");
+    }).join('');
 
     return `
       <div class="distrib-row">
-        <div class="distrib-q"><strong>F${qi+1}:</strong> ${f.frage}</div>
-        <div class="distrib-answers">${opts}</div>
+        <div class="distrib-header">
+          <div class="distrib-q">F${i + 1}: ${f.frage}</div>
+          <div class="distrib-badge badge-${cls}">${pct}% richtig</div>
+        </div>
+        ${opts}
       </div>
     `;
-  }).join("");
+  }).join('');
 }
 
-// ─── Reset ────────────────────────────────────
-async function confirmReset() {
-  if (!confirm("Wirklich alle Ergebnisse löschen? Das kann nicht rückgängig gemacht werden.")) return;
+/* ─── RESET ─────────────────────────────────── */
+window.confirmReset = async function () {
+  if (!confirm("Alle Testergebnisse wirklich löschen? (Für neue Kursrunde)")) return;
 
   const db         = window._db;
   const collection = window._collection;
@@ -237,21 +289,16 @@ async function confirmReset() {
 
   try {
     const snap = await getDocs(collection(db, "ergebnisse"));
-    const promises = [];
-    snap.forEach(d => promises.push(deleteDoc(doc(db, "ergebnisse", d.id))));
-    await Promise.all(promises);
-    alert("Alle Ergebnisse gelöscht.");
-  } catch (err) {
-    alert("Fehler beim Löschen: " + err.message);
+    const dels = snap.docs.map(d => deleteDoc(doc(db, "ergebnisse", d.id)));
+    await Promise.all(dels);
+    alert("Ergebnisse gelöscht.");
+  } catch (e) {
+    alert("Fehler beim Löschen: " + e.message);
   }
-}
+};
 
-// ─── Error ────────────────────────────────────
+/* ─── ERROR ─────────────────────────────────── */
 function showError(msg) {
-  document.getElementById("loadingState").innerHTML = `
-    <div style="text-align:center;color:var(--accent)">
-      <p style="font-size:1.5rem">⚠</p>
-      <p>${msg}</p>
-    </div>
-  `;
+  const el = document.getElementById("loadingState");
+  if (el) el.innerHTML = `<p style="color:#C1440E;font-weight:600">⚠ ${msg}</p>`;
 }

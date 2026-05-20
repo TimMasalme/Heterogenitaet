@@ -7,21 +7,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="meta/styles.css" />
+  <link rel="stylesheet" href="meta/components/components.css" />
   <style>
     .hub-screen {
-      min-height: 100vh;
+      min-height: calc(100vh - 66px - 48px);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 32px 16px;
+      padding: 48px 16px;
     }
     .hub-card {
-      background: var(--bg-card);
-      border-radius: var(--r);
+      background: white;
+      border-radius: 18px;
       padding: 52px 44px;
       max-width: 520px;
       width: 100%;
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 4px 24px rgba(26,22,18,.11);
       text-align: center;
     }
     .hub-links {
@@ -34,54 +35,45 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      background: var(--bg);
-      border: 2px solid var(--border);
-      border-radius: var(--r-sm);
+      background: #f5f7f9;
+      border: 2px solid #e5e9ee;
+      border-radius: 12px;
       padding: 18px 22px;
       text-decoration: none;
-      color: var(--ink);
+      color: #13212c;
       font-family: 'DM Sans', sans-serif;
-      transition: border-color .15s, background .15s, transform .1s;
+      transition: border-color .15s, background .15s, transform .12s;
       text-align: left;
     }
     .hub-link:hover {
-      border-color: var(--ink-mid);
-      background: #fff;
-      transform: translateX(3px);
+      border-color: #006778;
+      background: rgba(0,103,120,.04);
+      transform: translateX(4px);
     }
-    .hub-link-icon {
-      font-size: 1.5rem;
-      flex-shrink: 0;
-    }
-    .hub-link-title {
-      font-weight: 600;
-      font-size: .95rem;
-      margin-bottom: 2px;
-    }
-    .hub-link-sub {
-      font-size: .8rem;
-      color: var(--ink-light);
-    }
+    .hub-link-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .hub-link-title { font-weight: 600; font-size: .95rem; margin-bottom: 2px; }
+    .hub-link-sub   { font-size: .8rem; color: #7b8794; }
     .hub-link.link-stats {
-      border-color: var(--accent-lt);
-      background: var(--accent-lt);
+      border-color: rgba(0,103,120,.25);
+      background: rgba(0,103,120,.04);
     }
     .hub-link.link-stats:hover {
-      border-color: var(--accent);
+      border-color: #006778;
+      background: rgba(0,103,120,.08);
+    }
+    @media (max-width: 600px) {
+      .hub-card { padding: 32px 20px; }
     }
   </style>
 </head>
-<body>
-  <header class="site-header">
-    <div class="header-inner">
-      <span class="logo-mark">LdL</span>
-      <span class="course-tag">Heterogenität an Schulen</span>
-    </div>
-  </header>
+<body class="app-shell">
+
+  <!-- TOPBAR -->
+  <div id="app-topbar"></div>
 
   <div class="hub-screen">
     <div class="hub-card">
-      <p class="eyebrow">Übersicht</p>
+      <p class="eyebrow" style="color:#006778">Übersicht</p>
       <h1 class="title-large">Willkommen zur<br /><em>LdL-Einheit</em></h1>
       <p class="body-text">Wähle einen Bereich:</p>
 
@@ -90,7 +82,7 @@
           <span class="hub-link-icon">📋</span>
           <div>
             <div class="hub-link-title">Kurstest</div>
-            <div class="hub-link-sub">8 Fragen nach den Präsentationen · anonym abschicken</div>
+            <div class="hub-link-sub">MC-Fragen nach den Präsentationen · anonym abschicken</div>
           </div>
         </a>
         <a href="tabs/learn/learn.html" class="hub-link">
@@ -110,5 +102,10 @@
       </div>
     </div>
   </div>
+
+  <!-- FOOTER -->
+  <div id="app-footer"></div>
+
+  <script src="meta/components/components.js"></script>
 </body>
 </html>

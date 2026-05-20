@@ -16,7 +16,7 @@ const FRAGEN = [
     pool: "kurs",
     thema: "Begriff & Dimensionen",
     schwierigkeit: "leicht",
-    frage: "Welche der folgenden Aussagen beschreibt den erziehungswissenschaftlichen Begriff „Heterogenität" am treffendsten?",
+    frage: 'Welche der folgenden Aussagen beschreibt den erziehungswissenschaftlichen Begriff "Heterogenität" am treffendsten?',
     antworten: [
       "Die Unterschiede zwischen Schüler:innen sind ein didaktisches Problem, das minimiert werden sollte.",
       "Heterogenität beschreibt die Vielfalt von Lernenden hinsichtlich Leistung, Herkunft, Sprache und weiterer Merkmale.",
@@ -58,7 +58,7 @@ const FRAGEN = [
     pool: "kurs",
     thema: "Sprachliche Heterogenität",
     schwierigkeit: "mittel",
-    frage: "Was versteht man unter „Deutsch als Zweitsprache" (DaZ) im schulischen Kontext?",
+    frage: 'Welche der folgenden Aussagen beschreibt den erziehungswissenschaftlichen Begriff "Heterogenität" am treffendsten?',
     antworten: [
       "Unterricht für Schüler:innen, die bereits eine andere Fremdsprache gelernt haben.",
       "Förderung von Schüler:innen, die Deutsch nicht als Erstsprache erworben haben und es im schulischen Alltag als Unterrichtssprache nutzen.",
@@ -72,7 +72,7 @@ const FRAGEN = [
     pool: "kurs",
     thema: "Differenzierung & Umgang",
     schwierigkeit: "mittel",
-    frage: "Welche Maßnahme ist ein Beispiel für „innere Differenzierung" im Unterricht?",
+    frage: 'Welche der folgenden Aussagen beschreibt den erziehungswissenschaftlichen Begriff "Heterogenität" am treffendsten?',
     antworten: [
       "Aufteilung der Klasse nach Leistungsniveau in verschiedene Schulzweige",
       "Bereitstellung von Aufgaben unterschiedlicher Schwierigkeitsgrade innerhalb derselben Klasse",
@@ -86,7 +86,7 @@ const FRAGEN = [
     pool: "kurs",
     thema: "Soziale & kulturelle Heterogenität",
     schwierigkeit: "mittel",
-    frage: "Was beschreibt der Begriff „Kulturelle Responsivität" (culturally responsive teaching)?",
+    frage: 'Welche der folgenden Aussagen beschreibt den erziehungswissenschaftlichen Begriff "Heterogenität" am treffendsten?',
     antworten: [
       "Den Austausch von Schüler:innen zwischen verschiedenen Kulturen im Auslandsjahr",
       "Eine Unterrichtsgestaltung, die kulturelle Hintergründe und Erfahrungen der Schüler:innen aktiv einbezieht und wertschätzt",
@@ -139,7 +139,7 @@ const FRAGEN = [
     pool: "extra",
     thema: "Inklusion & Sonderpädagogik",
     schwierigkeit: "mittel",
-    frage: "Was unterscheidet „Integration" von „Inklusion" im schulpädagogischen Sinne?",
+    frage: 'Welche der folgenden Aussagen beschreibt den erziehungswissenschaftlichen Begriff "Heterogenität" am treffendsten?',
     antworten: [
       "Integration und Inklusion sind bedeutungsgleich.",
       "Integration passt Einzelne an das bestehende System an; Inklusion gestaltet das System für alle um.",
@@ -153,7 +153,7 @@ const FRAGEN = [
     pool: "extra",
     thema: "Differenzierung & Umgang",
     schwierigkeit: "schwer",
-    frage: "Was versteht man unter „Universal Design for Learning" (UDL)?",
+    frage: 'Welche der folgenden Aussagen beschreibt den erziehungswissenschaftlichen Begriff "Heterogenität" am treffendsten?',
     antworten: [
       "Ein barrierefreies Schulgebäude-Konzept",
       "Ein Unterrichtsrahmen, der von Anfang an multiple Zugangs-, Ausdrucks- und Beteiligungswege für alle Lernenden vorsieht",
@@ -167,7 +167,7 @@ const FRAGEN = [
     pool: "extra",
     thema: "Leistungsheterogenität",
     schwierigkeit: "mittel",
-    frage: "Was bedeutet „Pygmalion-Effekt" im schulischen Kontext?",
+    frage: 'Welche der folgenden Aussagen beschreibt den erziehungswissenschaftlichen Begriff "Heterogenität" am treffendsten?',
     antworten: [
       "Schüler:innen lernen besser, wenn sie in kleinen Gruppen arbeiten.",
       "Lehrererwartungen beeinflussen die tatsächliche Leistungsentwicklung von Schüler:innen.",
@@ -178,17 +178,15 @@ const FRAGEN = [
   }
 ];
 
-// Gibt nur den Kurspool zurück (feste Reihenfolge)
-function getKursFragen() {
+window.getKursFragen = function () {
   return FRAGEN.filter(f => f.pool === "kurs");
-}
+};
 
-// Gibt alle Fragen gemischt zurück (für Lernmodus)
-function getLernFragen() {
+window.getLernFragen = function () {
   const all = [...FRAGEN];
   for (let i = all.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [all[i], all[j]] = [all[j], all[i]];
   }
   return all;
-}
+};
