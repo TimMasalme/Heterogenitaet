@@ -1,0 +1,127 @@
+/* =============================================
+   LdL Assessment Tool · Meta Styles
+   Shared: variables, reset, header, buttons,
+           utilities, typography, responsive
+   ============================================= */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #F7F4EF;
+  --bg-card:   #FFFFFF;
+  --ink:       #1A1612;
+  --ink-mid:   #5C5248;
+  --ink-light: #9C9189;
+  --accent:    #C1440E;
+  --accent-lt: #F5E8E2;
+  --green:     #2D7A4F;
+  --green-lt:  #E3F2EA;
+  --amber:     #B8860B;
+  --amber-lt:  #FFF8E1;
+  --border:    #E5DED5;
+  --shadow:    0 2px 12px rgba(26,22,18,.07);
+  --shadow-md: 0 4px 24px rgba(26,22,18,.11);
+  --r:         12px;
+  --r-sm:      8px;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ─── HEADER ─────────────────────────────────── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 8px rgba(26,22,18,.05);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 24px;
+}
+
+.logo-mark {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+  background: var(--ink);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: .5px;
+}
+
+.course-tag {
+  font-size: .8rem;
+  font-weight: 500;
+  color: var(--ink-mid);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+/* ─── BUTTONS ────────────────────────────────── */
+.btn-primary {
+  background: var(--ink);
+  color: #fff;
+  border: none;
+  border-radius: var(--r-sm);
+  padding: 14px 40px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .2s, transform .1s;
+  letter-spacing: .02em;
+}
+
+.btn-primary:hover  { background: #2d2620; transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+
+/* ─── TYPOGRAPHY HELPERS ─────────────────────── */
+.eyebrow {
+  font-size: .75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.title-large {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 1.15;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+
+.title-large em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.body-text {
+  color: var(--ink-mid);
+  font-size: .95rem;
+  margin-bottom: 28px;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ─── UTILITIES ──────────────────────────────── */
+.hidden { display: none; }
+
+/* ─── RESPONSIVE ─────────────────────────────── */
+@media (max-width: 600px) {
+  .header-inner { padding: 12px 16px; }
+}

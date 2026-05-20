@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LdL Lernmodus · Heterogenität</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../meta/styles.css" />
+  <link rel="stylesheet" href="learn.css" />
+</head>
+<body class="learn-page">
+
+  <header class="site-header">
+    <div class="header-inner">
+      <span class="logo-mark">LdL</span>
+      <span class="course-tag">Lernmodus · Heterogenität an Schulen</span>
+      <div class="learn-badge">Selbststudium</div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </header>
+
+  <!-- Start Screen -->
+  <div class="screen active" id="screenStart">
+    <div class="learn-start-card">
+      <p class="eyebrow">Lernmodus</p>
+      <h1 class="title-large">Bereit zum<br /><em>Üben?</em></h1>
+      <p class="body-text">
+        Zufällige Fragen aus dem gesamten Pool – ideal zur Vorbereitung auf das Praktikum
+        oder zum Wiederholen nach dem Kurs. Die Reihenfolge wechselt bei jedem Durchgang.
+      </p>
+      <div class="learn-info-grid">
+        <div class="learn-info-item">
+          <span class="learn-info-icon">🎲</span>
+          <span>Zufällige Reihenfolge</span>
+        </div>
+        <div class="learn-info-item">
+          <span class="learn-info-icon">💡</span>
+          <span>Sofort-Feedback</span>
+        </div>
+        <div class="learn-info-item">
+          <span class="learn-info-icon">🔁</span>
+          <span>Beliebig wiederholbar</span>
+        </div>
+        <div class="learn-info-item">
+          <span class="learn-info-icon">📊</span>
+          <span>Ergebnis am Ende</span>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="startLearn()">Jetzt starten</button>
+    </div>
+  </div>
+
+  <!-- Question Screen -->
+  <div class="screen" id="screenQuestion">
+    <div class="question-layout">
+      <div class="q-meta">
+        <span class="q-counter" id="qCounter">Frage 1 / 12</span>
+        <div class="q-meta-right">
+          <span class="q-diff" id="qDiff"></span>
+          <span class="q-theme" id="qTheme"></span>
+        </div>
+      </div>
+      <h2 class="q-text" id="qText"></h2>
+      <div class="options-grid" id="optionsGrid"></div>
+
+      <!-- Feedback Box (hidden until answered) -->
+      <div class="feedback-box hidden" id="feedbackBox">
+        <div class="feedback-icon" id="feedbackIcon"></div>
+        <div class="feedback-text" id="feedbackText"></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-next" id="btnNext" onclick="nextQuestion()" disabled>
+          Weiter →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result Screen -->
+  <div class="screen" id="screenResult">
+    <div class="result-card">
+      <div class="result-icon" id="resultIcon"></div>
+      <h2 class="result-title" id="resultTitle"></h2>
+      <p class="result-sub" id="resultSub"></p>
+
+      <div class="score-display" id="scoreDisplay"></div>
+
+      <div class="result-breakdown" id="resultBreakdown"></div>
+
+      <div class="result-actions">
+        <button class="btn-primary" onclick="startLearn()">Nochmal (neu gemischt)</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../meta/questions.js"></script>
+  <script src="learn.js"></script>
+</body>
+</html>

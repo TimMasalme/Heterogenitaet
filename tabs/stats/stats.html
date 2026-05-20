@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LdL Auswertung · Heterogenität</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../meta/styles.css" />
+  <link rel="stylesheet" href="stats.css" />
+</head>
+<body class="stats-page">
+
+  <!-- Header -->
+  <header class="site-header stats-header">
+    <div class="header-inner">
+      <span class="logo-mark">LdL</span>
+      <span class="course-tag">Auswertung · Heterogenität an Schulen</span>
+      <div class="live-indicator" id="liveIndicator">
+        <span class="live-dot"></span>
+        <span>Live</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Loading -->
+  <main class="stats-main" id="statsMain">
+    <div class="loading-state" id="loadingState">
+      <div class="spinner"></div>
+      <p>Lade Ergebnisse…</p>
+    </div>
+
+    <!-- Content (hidden until loaded) -->
+    <div id="statsContent" class="hidden">
+
+      <!-- KPI Row -->
+      <div class="kpi-row" id="kpiRow"></div>
+
+      <!-- Per-Question Breakdown -->
+      <section class="section">
+        <h2 class="section-title">Fragen im Überblick</h2>
+        <p class="section-sub">Lösungsquote pro Frage – Rot = Handlungsbedarf</p>
+        <div class="q-breakdown" id="qBreakdown"></div>
+      </section>
+
+      <!-- Per-Theme Breakdown -->
+      <section class="section">
+        <h2 class="section-title">Themengebiete</h2>
+        <p class="section-sub">Welche LdL-Gruppe hat gut erklärt?</p>
+        <div class="theme-grid" id="themeGrid"></div>
+      </section>
+
+      <!-- Answer Distribution -->
+      <section class="section">
+        <h2 class="section-title">Antwortverteilung</h2>
+        <p class="section-sub">Häufigste Fehlvorstellungen pro Frage sichtbar machen</p>
+        <div class="distrib-list" id="distribList"></div>
+      </section>
+
+      <!-- Reset -->
+      <div class="reset-row">
+        <button class="btn-reset" onclick="confirmReset()">Alle Ergebnisse löschen</button>
+        <span class="reset-hint">Für neue Kursrunde zurücksetzen</span>
+      </div>
+
+    </div>
+  </main>
+
+  <script type="module" src="../../meta/firebase.js"></script>
+  <script src="../../meta/questions.js"></script>
+  <script src="stats.js"></script>
+</body>
+</html>

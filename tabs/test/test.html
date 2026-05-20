@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LdL-Test · Heterogenität</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../meta/styles.css" />
+  <link rel="stylesheet" href="test.css" />
+</head>
+<body class="test-page">
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <span class="logo-mark">LdL</span>
+      <span class="course-tag">Heterogenität an Schulen</span>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </header>
+
+  <!-- Intro Screen -->
+  <div class="screen active" id="screenIntro">
+    <div class="intro-card">
+      <p class="eyebrow">Wissenscheck</p>
+      <h1 class="title-large">Heterogenität<br /><em>an Schulen</em></h1>
+      <p class="body-text">Nach den Präsentationen beantworten alle kurz ein paar Fragen. Die Auswertung zeigt uns, welche Bereiche noch vertieft werden sollten.</p>
+      <div class="meta-row">
+        <span class="meta-chip">📋 8 Fragen</span>
+        <span class="meta-chip">⏱ ~5 Minuten</span>
+        <span class="meta-chip">🔒 Anonym</span>
+      </div>
+      <button class="btn-primary" onclick="startTest()">Test starten</button>
+    </div>
+  </div>
+
+  <!-- Question Screen -->
+  <div class="screen" id="screenQuestion">
+    <div class="question-layout">
+      <div class="q-meta">
+        <span class="q-counter" id="qCounter">Frage 1 / 8</span>
+        <span class="q-theme" id="qTheme"></span>
+      </div>
+      <h2 class="q-text" id="qText"></h2>
+      <div class="options-grid" id="optionsGrid"></div>
+      <button class="btn-next" id="btnNext" onclick="nextQuestion()" disabled>Weiter →</button>
+    </div>
+  </div>
+
+  <!-- Done Screen -->
+  <div class="screen" id="screenDone">
+    <div class="done-card">
+      <div class="done-icon">✓</div>
+      <h2>Danke!</h2>
+      <p>Deine Antworten wurden übermittelt.<br />Die Auswertung läuft auf dem Kursbildschirm.</p>
+      <p class="done-sub">Du kannst dieses Fenster schließen.</p>
+    </div>
+  </div>
+
+  <!-- Error Screen -->
+  <div class="screen" id="screenError">
+    <div class="done-card error-card">
+      <div class="done-icon">⚠</div>
+      <h2>Verbindungsfehler</h2>
+      <p id="errorMsg">Die Antworten konnten nicht gespeichert werden.</p>
+      <button class="btn-primary" onclick="retrySubmit()">Erneut versuchen</button>
+    </div>
+  </div>
+
+  <script type="module" src="../../meta/firebase.js"></script>
+  <script src="../../meta/questions.js"></script>
+  <script src="test.js"></script>
+</body>
+</html>

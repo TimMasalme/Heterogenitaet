@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LdL · Heterogenität an Schulen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="meta/styles.css" />
+  <style>
+    .hub-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+    .hub-card {
+      background: var(--bg-card);
+      border-radius: var(--r);
+      padding: 52px 44px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: var(--shadow-md);
+      text-align: center;
+    }
+    .hub-links {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 32px;
+    }
+    .hub-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 18px 22px;
+      text-decoration: none;
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color .15s, background .15s, transform .1s;
+      text-align: left;
+    }
+    .hub-link:hover {
+      border-color: var(--ink-mid);
+      background: #fff;
+      transform: translateX(3px);
+    }
+    .hub-link-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .hub-link-title {
+      font-weight: 600;
+      font-size: .95rem;
+      margin-bottom: 2px;
+    }
+    .hub-link-sub {
+      font-size: .8rem;
+      color: var(--ink-light);
+    }
+    .hub-link.link-stats {
+      border-color: var(--accent-lt);
+      background: var(--accent-lt);
+    }
+    .hub-link.link-stats:hover {
+      border-color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <span class="logo-mark">LdL</span>
+      <span class="course-tag">Heterogenität an Schulen</span>
+    </div>
+  </header>
+
+  <div class="hub-screen">
+    <div class="hub-card">
+      <p class="eyebrow">Übersicht</p>
+      <h1 class="title-large">Willkommen zur<br /><em>LdL-Einheit</em></h1>
+      <p class="body-text">Wähle einen Bereich:</p>
+
+      <div class="hub-links">
+        <a href="tabs/test/test.html" class="hub-link">
+          <span class="hub-link-icon">📋</span>
+          <div>
+            <div class="hub-link-title">Kurstest</div>
+            <div class="hub-link-sub">8 Fragen nach den Präsentationen · anonym abschicken</div>
+          </div>
+        </a>
+        <a href="tabs/learn/learn.html" class="hub-link">
+          <span class="hub-link-icon">🎲</span>
+          <div>
+            <div class="hub-link-title">Lernmodus</div>
+            <div class="hub-link-sub">Zufällige Fragen zur Vorbereitung · mit Sofort-Feedback</div>
+          </div>
+        </a>
+        <a href="tabs/stats/stats.html" class="hub-link link-stats">
+          <span class="hub-link-icon">📊</span>
+          <div>
+            <div class="hub-link-title">Auswertung</div>
+            <div class="hub-link-sub">Live-Statistik für den Beamer · nur für Lehrende</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

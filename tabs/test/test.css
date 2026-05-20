@@ -1,0 +1,206 @@
+/* =============================================
+   tabs/test/test.css
+   Styles für test.html (Kurztest-Tab)
+   Setzt meta/styles.css voraus
+   ============================================= */
+
+/* ─── PROGRESS BAR ───────────────────────────── */
+.progress-bar-wrap {
+  height: 3px;
+  background: var(--border);
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--accent);
+  transition: width .4s ease;
+  width: 0%;
+}
+
+/* ─── SCREENS ────────────────────────────────── */
+.screen {
+  display: none;
+  min-height: calc(100vh - 60px);
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+.screen.active { display: flex; }
+
+/* ─── INTRO CARD ─────────────────────────────── */
+.intro-card {
+  background: var(--bg-card);
+  border-radius: var(--r);
+  padding: 48px 40px;
+  max-width: 520px;
+  width: 100%;
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.meta-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.meta-chip {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: .8rem;
+  color: var(--ink-mid);
+}
+
+/* ─── QUESTION LAYOUT ────────────────────────── */
+.question-layout {
+  background: var(--bg-card);
+  border-radius: var(--r);
+  padding: 40px;
+  max-width: 620px;
+  width: 100%;
+  box-shadow: var(--shadow-md);
+}
+
+.q-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.q-counter {
+  font-size: .78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--ink-light);
+}
+
+.q-theme {
+  font-size: .75rem;
+  background: var(--accent-lt);
+  color: var(--accent);
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-weight: 500;
+}
+
+.q-text {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.15rem, 3vw, 1.4rem);
+  line-height: 1.4;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+
+/* ─── OPTIONS ────────────────────────────────── */
+.options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.option-btn {
+  text-align: left;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 14px 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .93rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color .15s, background .15s, transform .1s;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.option-btn:hover:not(:disabled) {
+  border-color: var(--ink-mid);
+  background: #fff;
+  transform: translateX(2px);
+}
+
+.option-btn.selected { border-color: var(--ink);    background: var(--ink);      color: #fff; }
+.option-btn.correct  { border-color: var(--green);  background: var(--green-lt); color: var(--green); }
+.option-btn.wrong    { border-color: var(--accent);  background: var(--accent-lt); color: var(--accent); }
+
+.option-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  font-size: .72rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-top: 1px;
+  opacity: .7;
+}
+
+/* ─── NEXT BUTTON ────────────────────────────── */
+.btn-next {
+  background: transparent;
+  border: 2px solid var(--ink);
+  border-radius: var(--r-sm);
+  padding: 12px 32px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .9rem;
+  font-weight: 500;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background .2s, color .2s;
+  width: 100%;
+}
+
+.btn-next:hover:not(:disabled) { background: var(--ink); color: #fff; }
+.btn-next:disabled { opacity: .35; cursor: not-allowed; }
+
+/* ─── DONE / ERROR CARDS ─────────────────────── */
+.done-card {
+  background: var(--bg-card);
+  border-radius: var(--r);
+  padding: 56px 40px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.done-icon {
+  font-size: 2.5rem;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--green-lt);
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.error-card .done-icon { background: var(--accent-lt); color: var(--accent); }
+
+.done-card h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+}
+
+.done-card p  { color: var(--ink-mid); margin-bottom: 10px; }
+.done-sub     { font-size: .83rem !important; }
+
+/* ─── RESPONSIVE ─────────────────────────────── */
+@media (max-width: 600px) {
+  .intro-card, .question-layout, .done-card { padding: 28px 20px; }
+}
