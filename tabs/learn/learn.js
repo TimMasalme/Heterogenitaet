@@ -107,6 +107,7 @@ function switchTab(tab) {
   });
   const id = "tab" + tab.charAt(0).toUpperCase() + tab.slice(1);
   document.getElementById(id).classList.add("active");
+  if (tab === "karten") initKartenIfNeeded();
 }
 
 /* ──────────────────────────────────────────────
@@ -364,3 +365,127 @@ function zeigeErgebnis() {
         </div>`;
     }).join("");
 }
+/* =============================================
+   LERNKARTEN
+   Baut Karteikarten aus dem WISSEN-Array:
+   - Definitionen (def, merksatz, highlight)
+   - Vorderseite: Begriff / Frage
+   - Rückseite:   Erklärung / Text
+   ============================================= */
+
+let karten    = [];
+let kartenIdx = 0;
+let kartenFlipped = false;
+
+function buildKarten() {
+  const result = [];
+  WISSEN.forEach(thema => {
+    thema.blocks.forEach(block => {
+      if (block.type === 'def') {
+        result.push({
+          thema:    thema.title,
+          front:    block.term,
+          back:     block.text,
+          type:     'def'
+        });
+      } else if (block.type === 'merksatz') {
+        result.push({
+          thema:    thema.title,
+          front:    'Merksatz: ' + thema.title,
+          back:     block.text,
+          type:     'merksatz'
+        });
+      } else if (block.type === 'highlight') {
+        result.push({
+          thema:    thema.title,
+          front:    block.label,
+          back:     block.text,
+          type:     'highlight'
+        });
+      }
+    });
+  });
+  // Mischen
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+function initKartenIfNeeded() {
+  // Nichts zu tun – Start-Screen wird angezeigt
+}
+
+function startKarten() {
+  karten    = buildKarten();
+  kartenIdx = 0;
+  showKartenScreen('kartenScreenCard');
+  renderKarte();
+}
+
+function showKartenScreen(id) {
+  document.querySelectorAll('#tabKarten .screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function renderKarte() {
+  if (!karten.length) return;
+  const k    = karten[kartenIdx];
+  kartenFlipped = false;
+
+  document.getElementById('kartenProgress').textContent =
+    `${kartenIdx + 1} / ${karten.length}`;
+
+  const typeLabel = { def: 'Definition', merksatz: 'Merksatz', highlight: 'Konzept' };
+
+  const stage = document.getElementById('kartenStage');
+  stage.innerHTML = `
+    <div class="karte" id="karte" onclick="flipKarte()">
+      <div class="karte-inner" id="karteInner">
+        <div class="karte-front">
+          <div class="karte-badge">${typeLabel[k.type] || 'Begriff'} · ${k.thema}</div>
+          <div class="karte-front-text">${k.front}</div>
+          <div class="karte-hint">Tippen zum Umdrehen</div>
+        </div>
+        <div class="karte-back">
+          <div class="karte-badge karte-badge-back">${typeLabel[k.type] || 'Begriff'} · ${k.thema}</div>
+          <div class="karte-back-text">${k.back}</div>
+        </div>
+      </div>
+    </div>`;
+
+  // Prev/Next buttons
+  const prev = document.getElementById('kartenBtnPrev');
+  const next = document.getElementById('kartenBtnNext');
+  if (prev) prev.style.visibility = kartenIdx > 0 ? 'visible' : 'hidden';
+  if (next) next.textContent = kartenIdx < karten.length - 1 ? 'Weiter →' : 'Fertig';
+}
+
+function flipKarte() {
+  kartenFlipped = !kartenFlipped;
+  const inner = document.getElementById('karteInner');
+  if (inner) inner.classList.toggle('flipped', kartenFlipped);
+}
+
+function kartenNext() {
+  if (kartenIdx < karten.length - 1) {
+    kartenIdx++;
+    renderKarte();
+  } else {
+    showKartenScreen('kartenScreenDone');
+  }
+}
+
+function kartenPrev() {
+  if (kartenIdx > 0) {
+    kartenIdx--;
+    renderKarte();
+  }
+}
+
+window.startKarten  = startKarten;
+window.flipKarte    = flipKarte;
+window.kartenNext   = kartenNext;
+window.kartenPrev   = kartenPrev;
+window.initKartenIfNeeded = initKartenIfNeeded;

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LdL · Fragen stellen · Heterogenität</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../meta/styles.css" />
+  <link rel="stylesheet" href="../../meta/components/components.css" />
+  <link rel="stylesheet" href="fragen.css" />
+</head>
+<body class="app-shell">
+
+  <div id="app-topbar"></div>
+
+  <div class="layout">
+    <div class="sidebar-slot"></div>
+
+    <main class="content">
+      <div class="content-inner">
+
+        <div class="content-header">
+          <div>
+            <div class="eyebrow">Anonym · Vor dem Test</div>
+            <h1 class="page-title">Fragen<br>stellen</h1>
+          </div>
+        </div>
+
+        <!-- INTRO -->
+        <p class="fragen-intro">
+          Hast du noch eine Frage zum Stoff? Schreib sie hier auf –
+          vollständig anonym. Die Lehrperson sieht alle Fragen live auf der Auswertungsseite
+          und kann sie kurz vor dem Test aufgreifen.
+        </p>
+
+        <!-- FORMULAR -->
+        <div class="frage-form" id="frageForm">
+          <textarea
+            id="frageInput"
+            class="frage-textarea"
+            placeholder="Deine Frage …"
+            maxlength="400"
+            rows="4"
+          ></textarea>
+          <div class="frage-footer">
+            <span class="char-count" id="charCount">0 / 400</span>
+            <button class="submit-btn" id="submitBtn" onclick="submitFrage()">
+              Anonym senden
+            </button>
+          </div>
+        </div>
+
+        <!-- BESTÄTIGUNG -->
+        <div class="frage-done hidden" id="frageDone">
+          <div class="done-icon">✓</div>
+          <div class="done-title">Frage eingereicht</div>
+          <div class="done-sub">Sie wurde anonym gespeichert und erscheint auf dem Beamer.</div>
+          <button class="btn-ghost" onclick="resetFrage()">Weitere Frage stellen</button>
+        </div>
+
+        <!-- HINWEIS -->
+        <div class="fragen-hint">
+          <span class="hint-icon">🔒</span>
+          Es werden keinerlei persönliche Daten gespeichert – weder Name noch Gerät.
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <div id="app-footer"></div>
+
+  <script type="module" src="../../meta/firebase.js"></script>
+  <script src="fragen.js"></script>
+  <script src="../../meta/components/components.js"></script>
+</body>
+</html>

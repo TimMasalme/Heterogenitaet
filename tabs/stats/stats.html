@@ -55,6 +55,17 @@
             <p class="section-hint">Hover über einen Buchstaben für den vollständigen Antworttext</p>
             <div id="distribList"></div>
           </section>
+
+          <section class="section">
+            <h2 class="section-title">Anonyme Fragen</h2>
+            <p class="section-hint">Eingereichte Fragen von Studierenden – live aktualisiert</p>
+            <div id="fragenList">
+              <div class="fragen-empty" id="fragenEmpty">Noch keine Fragen eingereicht.</div>
+            </div>
+            <div class="fragen-actions" id="fragenActions" style="display:none">
+              <button class="btn-danger-sm" onclick="confirmDeleteFragen()">Alle Fragen löschen</button>
+            </div>
+          </section>
         </div><!-- /statsContent -->
 
       </div><!-- /content-inner -->

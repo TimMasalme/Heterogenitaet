@@ -91,6 +91,9 @@ async function submitAll() {
     }))
   };
 
+  const offeneText = document.getElementById('offeneFrage')?.value?.trim();
+  if (offeneText) payload.offeneFrage = offeneText;
+
   try {
 
     await window._addDoc(
@@ -120,6 +123,10 @@ function resetTest() {
   // Alle selected-Klassen entfernen
   document.querySelectorAll(".option.selected")
     .forEach(o => o.classList.remove("selected"));
+
+  // Offene Frage leeren
+  const offene = document.getElementById('offeneFrage');
+  if (offene) offene.value = '';
 
   // Fortschritt zurücksetzen
   updateProgress();

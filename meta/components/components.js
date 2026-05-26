@@ -47,6 +47,7 @@
       <div class="topbar-tabs" id="topbarLearnTabs">
         <button class="topbar-tab active" data-tab="wissen" onclick="switchTab('wissen')">Wissen</button>
         <button class="topbar-tab"        data-tab="ueben"  onclick="switchTab('ueben')">Üben</button>
+        <button class="topbar-tab"        data-tab="karten" onclick="switchTab('karten')">Karten</button>
       </div>` : '';
 
     // Live-Dot nur auf stats
