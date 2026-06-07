@@ -1,0 +1,158 @@
+/* =============================================
+   fragen.css  –  Anonyme Fragen stellen
+   Topbar / Sidebar / Footer → components.css
+   ============================================= */
+
+.content { padding: 0; }
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: #b8720a;
+  margin-bottom: 10px;
+}
+
+.page-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2.4rem;
+  font-weight: 400;
+  margin: 0;
+  color: #003560;
+  line-height: 1.15;
+}
+
+/* ── INTRO ─────────────────────────────────── */
+.fragen-intro {
+  font-size: .95rem;
+  color: #41505f;
+  line-height: 1.7;
+  margin-bottom: 28px;
+  max-width: 560px;
+}
+
+/* ── FORMULAR ──────────────────────────────── */
+.frage-form {
+  background: #fff;
+  border: 1px solid #e5ded5;
+  border-radius: 14px;
+  padding: 20px 24px 16px;
+  max-width: 640px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px rgba(26,22,18,.06);
+}
+
+.frage-textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .95rem;
+  color: #1a1612;
+  line-height: 1.65;
+  resize: vertical;
+  min-height: 100px;
+  background: transparent;
+}
+
+.frage-textarea::placeholder { color: #bbb; }
+
+.frage-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #f0ebe4;
+}
+
+.char-count {
+  font-size: .78rem;
+  color: #9c9189;
+}
+
+/* ── SUBMIT BUTTON ─────────────────────────── */
+.submit-btn {
+  background: #003560;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 28px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .2s, transform .1s;
+  letter-spacing: .02em;
+}
+
+.submit-btn:hover  { background: #004a87; transform: translateY(-1px); }
+.submit-btn:active { transform: translateY(0); }
+.submit-btn:disabled { background: #b0bcc8; cursor: not-allowed; transform: none; }
+
+.btn-ghost {
+  background: transparent;
+  color: #003560;
+  border: 1px solid #c8d4de;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .2s;
+}
+
+.btn-ghost:hover { background: #f0f4f8; }
+
+/* ── BESTÄTIGUNG ───────────────────────────── */
+.frage-done {
+  background: #f0f7f4;
+  border: 1px solid #b8dfc9;
+  border-radius: 14px;
+  padding: 28px 24px;
+  max-width: 640px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.done-icon {
+  font-size: 2rem;
+  color: #2d7a4f;
+  margin-bottom: 10px;
+}
+
+.done-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.4rem;
+  color: #1a1612;
+  margin-bottom: 6px;
+}
+
+.done-sub {
+  font-size: .88rem;
+  color: #41505f;
+  margin-bottom: 20px;
+  line-height: 1.55;
+}
+
+/* ── HINWEIS ───────────────────────────────── */
+.fragen-hint {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: .8rem;
+  color: #9c9189;
+  max-width: 640px;
+}
+
+.hint-icon { font-size: 1rem; flex-shrink: 0; }
+
+.hidden { display: none !important; }

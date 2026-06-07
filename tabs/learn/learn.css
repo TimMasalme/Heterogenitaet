@@ -441,3 +441,116 @@
   .feature-grid  { grid-template-columns: 1fr; }
   .compare-grid  { grid-template-columns: 1fr; }
 }
+
+/* ══ KARTEN TAB ════════════════════════════════ */
+
+.karten-progress {
+  font-size: .8rem;
+  color: #7b8794;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.karten-stage {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 28px;
+  perspective: 1000px;
+}
+
+/* ── Die Karte ─────────────────────────────── */
+.karte {
+  width: 100%;
+  max-width: 560px;
+  min-height: 280px;
+  cursor: pointer;
+  perspective: 1000px;
+  user-select: none;
+}
+
+.karte-inner {
+  position: relative;
+  width: 100%;
+  min-height: 280px;
+  transition: transform .45s cubic-bezier(.4,0,.2,1);
+  transform-style: preserve-3d;
+}
+
+.karte-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.karte-front,
+.karte-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 18px;
+  padding: 36px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.karte-front {
+  background: #fff;
+  border: 1px solid #e5ded5;
+  box-shadow: 0 4px 24px rgba(26,22,18,.09);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.karte-back {
+  background: #003560;
+  color: #fff;
+  transform: rotateY(180deg);
+  justify-content: center;
+}
+
+.karte-badge {
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: #9c9189;
+  margin-bottom: 20px;
+  align-self: flex-start;
+  width: 100%;
+  text-align: left;
+}
+
+.karte-badge-back {
+  color: rgba(255,255,255,.4);
+}
+
+.karte-front-text {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  font-weight: 400;
+  color: #003560;
+  line-height: 1.2;
+  margin-bottom: auto;
+  margin-top: auto;
+}
+
+.karte-back-text {
+  font-size: .92rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,.88);
+}
+
+.karte-hint {
+  font-size: .75rem;
+  color: #b0bcc8;
+  margin-top: 24px;
+}
+
+/* ── Controls ──────────────────────────────── */
+.karten-controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  max-width: 560px;
+  margin: 0 auto;
+}

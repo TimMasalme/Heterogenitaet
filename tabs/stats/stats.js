@@ -49,6 +49,7 @@ function renderAlles(ergebnisse) {
   renderQBreakdown(stats, kursFragen);
   renderThemen(stats, kursFragen);
   renderDistrib(stats, kursFragen);
+  renderOffeneFragen(ergebnisse);
 }
 
 /* ─── AGGREGATION ───────────────────────────── */
@@ -310,4 +311,37 @@ window.confirmResetWithPin = async function () {
 function showError(msg) {
   const el = document.getElementById("loadingState");
   if (el) el.innerHTML = `<p style="color:#C1440E;font-weight:600">⚠ ${msg}</p>`;
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ─── OFFENE FRAGEN (aus ergebnisse) ────────── */
+function renderOffeneFragen(ergebnisse) {
+  const list = document.getElementById('fragenList');
+  const actions = document.getElementById('fragenActions');
+  if (!list) return;
+
+  const mitFrage = ergebnisse.filter(e => e.offeneFrage?.trim());
+
+  if (!mitFrage.length) {
+    list.innerHTML = '<div class="fragen-empty">Keine offenen Fragen eingereicht.</div>';
+    if (actions) actions.style.display = 'none';
+    return;
+  }
+
+  if (actions) actions.style.display = 'none'; // Löschen nicht nötig – wird mit Ergebnissen gelöscht
+
+  list.innerHTML = '<div class="fragen-list">' +
+    mitFrage.map(e => {
+      const ts  = e.timestamp?.toDate?.();
+      const zeit = ts ? ts.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
+      return `
+        <div class="frage-item">
+          ${escapeHtml(e.offeneFrage)}
+          ${zeit ? `<div class="frage-time">${zeit} Uhr</div>` : ''}
+        </div>`;
+    }).join('') +
+  '</div>';
 }

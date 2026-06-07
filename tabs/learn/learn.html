@@ -121,6 +121,93 @@
 
   </div><!-- /tabUeben -->
 
+  <!-- ══ TAB: KARTEN ═══════════════════════════ -->
+  <div class="tab-panel" id="tabKarten">
+
+    <!-- START SCREEN -->
+    <div class="screen active" id="kartenScreenStart">
+      <div class="layout">
+        <div class="sidebar-slot"></div>
+        <main class="content">
+          <div class="content-inner">
+            <div class="content-header">
+              <div>
+                <div class="eyebrow">Lernkarten</div>
+                <h1 class="page-title">Begriffe<br>einprägen</h1>
+              </div>
+            </div>
+            <p class="start-desc">
+              Alle Definitionen und Merksätze als Karteikarten – Vorderseite zeigen,
+              kurz nachdenken, dann umdrehen. Ideal zum gezielten Einprägen.
+            </p>
+            <div class="feature-grid">
+              <div class="feature-item">
+                <div class="feature-label">Alle Themen</div>
+                <div class="feature-sub">Definitionen & Merksätze</div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-label">Selbstkontrolle</div>
+                <div class="feature-sub">Karte umdrehen & vergleichen</div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-label">Zufällig</div>
+                <div class="feature-sub">Neue Reihenfolge bei jedem Start</div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-label">Kein Zeitdruck</div>
+                <div class="feature-sub">Im eigenen Tempo</div>
+              </div>
+            </div>
+            <div class="submit-row">
+              <button class="submit-btn" onclick="startKarten()">Karten starten</button>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- KARTEN SCREEN -->
+    <div class="screen" id="kartenScreenCard">
+      <div class="layout">
+        <div class="sidebar-slot"></div>
+        <main class="content">
+          <div class="content-inner">
+            <div class="karten-progress" id="kartenProgress">1 / 1</div>
+            <div class="karten-stage" id="kartenStage">
+              <!-- Karte wird per JS gerendert -->
+            </div>
+            <div class="karten-controls" id="kartenControls">
+              <button class="btn-ghost" onclick="kartenPrev()" id="kartenBtnPrev">← Zurück</button>
+              <button class="submit-btn" onclick="kartenNext()" id="kartenBtnNext">Weiter →</button>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- DONE SCREEN -->
+    <div class="screen" id="kartenScreenDone">
+      <div class="layout">
+        <div class="sidebar-slot"></div>
+        <main class="content">
+          <div class="content-inner">
+            <div class="content-header">
+              <div>
+                <div class="eyebrow">Fertig</div>
+                <h1 class="page-title">Alle Karten<br>durch!</h1>
+              </div>
+            </div>
+            <div class="submit-row" style="gap:12px">
+              <button class="btn-ghost" onclick="switchTab('wissen')">Inhalte nochmal lesen</button>
+              <button class="submit-btn" onclick="startKarten()">Nochmal</button>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+  </div><!-- /tabKarten -->
+
   <div id="app-footer"></div>
 
   <script src="../../meta/questions.js"></script>
