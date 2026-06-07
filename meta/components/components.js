@@ -14,7 +14,6 @@
     if (p.includes('/test/'))  return 'test';
     if (p.includes('/learn/')) return 'learn';
     if (p.includes('/stats/')) return 'stats';
-    if (p.includes('/questions/')) return 'questions';
     return '';
   }
 
@@ -31,7 +30,6 @@
     { id: 'test',  label: 'Test',        path: 'tabs/test/test.html',   sub: 'Kurstest' },
     { id: 'learn', label: 'Lernmodus',   path: 'tabs/learn/learn.html', sub: 'Vorbereitung' },
     { id: 'stats',     label: 'Auswertung',  path: 'tabs/stats/stats.html',         sub: 'Nur Lehrende' },
-    { id: 'questions', label: 'Fragen',       path: 'tabs/questions/questions.html', sub: 'Fragen stellen' },
   ];
 
   /* ─── TOPBAR ─────────────────────────────── */
