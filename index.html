@@ -4,116 +4,65 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LdL · Heterogenität an Schulen</title>
-  <link rel="icon" type="image/svg+xml" href="meta/favicon/heterogenitaet-fav.svg" />  <link rel="stylesheet" href="meta/components/components.css" />
+  <link rel="icon" type="image/svg+xml" href="meta/favicon/heterogenitaet-fav.svg" />
+  <link rel="stylesheet" href="meta/components/components.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; font-family: 'DM Sans', sans-serif; }
+    html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: #f8fafc; }
 
     body {
-      background: #03111c;
-      color: #fff;
+      color: #16212d;
       min-height: 100vh;
       padding-top: 66px;
       overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 15% 10%, rgba(0,103,120,.28) 0%, transparent 65%),
-        radial-gradient(ellipse 60% 50% at 85% 90%, rgba(0,53,96,.45) 0%, transparent 65%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    #app-topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 200; }
-    #app-footer { position: relative; z-index: 1; }
+    #app-topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: #003560; }
+    #app-footer { position: relative; z-index: 1; margin-top: auto; }
 
     .page {
       position: relative;
       z-index: 1;
-      min-height: calc(100vh - 66px);
+      max-width: 1040px;
+      width: 100%;
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 56px 32px 72px;
-      gap: 64px;
+      padding: 64px 24px 80px;
+      gap: 56px;
     }
 
     .lede { text-align: center; }
 
     .lede-eyebrow {
-      font-size: .7rem;
-      font-weight: 500;
+      font-size: .75rem;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: .2em;
-      color: rgba(255,255,255,.3);
-      margin-bottom: 16px;
+      letter-spacing: .14em;
+      color: #7b8794;
+      margin-bottom: 12px;
     }
 
     .lede-title {
       font-family: 'DM Serif Display', serif;
-      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-size: clamp(2rem, 4vw, 2.8rem);
       font-weight: 400;
-      color: rgba(255,255,255,.85);
+      color: #003560;
       line-height: 1.2;
     }
 
-    .lede-title em { font-style: italic; color: #8dae10; }
+    .lede-title em { font-style: italic; color: #8dae10; font-weight: 400; }
 
     /* ── MAIN GRID ── */
     .main-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      gap: 24px;
       width: 100%;
-      max-width: 960px;
-    }
-
-    /* ── QR STRIP (below cards) ── */
-    .qr-strip {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 20px;
-      padding: 20px 28px;
-      max-width: 420px;
-      width: 100%;
-    }
-
-    .qr-box {
-      background: #fff;
-      border-radius: 10px;
-      padding: 6px;
-      flex-shrink: 0;
-    }
-
-    .qr-box canvas, .qr-box img { display: block; }
-
-    .qr-text {}
-    .qr-label {
-      font-size: .65rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .18em;
-      color: #5ed4e0;
-      margin-bottom: 4px;
-    }
-    .qr-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.1rem;
-      color: rgba(255,255,255,.85);
-      margin-bottom: 4px;
-    }
-    .qr-sub {
-      font-size: .78rem;
-      color: rgba(255,255,255,.4);
-      line-height: 1.4;
     }
 
     /* ── CARDS ── */
@@ -121,73 +70,50 @@
       position: relative;
       display: flex;
       flex-direction: column;
-      border-radius: 24px;
-      padding: 48px 36px 40px;
+      background: #ffffff;
+      border: 1px solid #e3e8ee;
+      border-radius: 16px;
+      padding: 40px 32px 36px;
       text-decoration: none;
-      color: #fff;
-      overflow: hidden;
-      transition: transform .22s cubic-bezier(.22,1,.36,1), box-shadow .22s;
-      min-height: 320px;
+      color: #16212d;
+      transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+      min-height: 280px;
     }
 
-    .card-test {
-      background: linear-gradient(145deg, rgba(0,103,120,.55) 0%, rgba(0,53,96,.4) 100%);
-      border: 1px solid rgba(0,180,200,.22);
-    }
-    .card-learn {
-      background: linear-gradient(145deg, rgba(90,120,8,.55) 0%, rgba(0,53,96,.38) 100%);
-      border: 1px solid rgba(141,174,16,.22);
-    }
-    .card-stats {
-      background: linear-gradient(145deg, rgba(0,30,60,.6) 0%, rgba(0,15,35,.5) 100%);
-      border: 1px solid rgba(255,255,255,.08);
-    }
-    .card-fragen {
-      background: linear-gradient(145deg, rgba(120,60,0,.55) 0%, rgba(60,20,0,.4) 100%);
-      border: 1px solid rgba(220,140,40,.22);
-    }
-
-    .card:hover { transform: translateY(-8px) scale(1.01); }
-    .card-test:hover  { box-shadow: 0 24px 60px rgba(0,103,120,.35); border-color: rgba(0,180,200,.4); }
-    .card-learn:hover { box-shadow: 0 24px 60px rgba(141,174,16,.3); border-color: rgba(141,174,16,.4); }
-    .card-stats:hover { box-shadow: 0 24px 60px rgba(0,53,96,.4); border-color: rgba(255,255,255,.18); }
-    .card-fragen:hover { box-shadow: 0 24px 60px rgba(180,100,0,.3); border-color: rgba(220,140,40,.4); }
-
-    .card::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+    .card:hover { 
+      transform: translateY(-4px); 
+      border-color: #006778;
+      box-shadow: 0 12px 32px rgba(0, 103, 120, 0.06);
     }
 
     .card-tag {
-      font-size: .65rem;
+      font-size: .7rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: .18em;
-      margin-bottom: auto;
-      padding-bottom: 32px;
+      letter-spacing: .12em;
+      color: #7d8792;
+      margin-bottom: 24px;
     }
 
-    .card-test   .card-tag { color: #5ed4e0; }
-    .card-learn  .card-tag { color: #b8d84c; }
-    .card-stats  .card-tag { color: rgba(255,255,255,.35); }
-    .card-fragen .card-tag { color: #f0a830; }
+    .card:hover .card-tag {
+      color: #006778;
+    }
 
     .card-title {
       font-family: 'DM Serif Display', serif;
-      font-size: clamp(1.7rem, 2.5vw, 2.2rem);
+      font-size: clamp(1.5rem, 2.2vw, 1.9rem);
       font-weight: 400;
-      line-height: 1.1;
-      margin-bottom: 14px;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      color: #003560;
     }
 
     .card-desc {
-      font-size: .82rem;
-      color: rgba(255,255,255,.45);
-      line-height: 1.65;
-      margin-bottom: 32px;
+      font-size: .88rem;
+      color: #6c7b88;
+      line-height: 1.6;
+      margin-bottom: auto;
+      padding-bottom: 28px;
     }
 
     .card-arrow {
@@ -198,18 +124,14 @@
       font-weight: 600;
       letter-spacing: .06em;
       text-transform: uppercase;
+      color: #006778;
       transition: gap .2s;
     }
 
-    .card-test   .card-arrow { color: #5ed4e0; }
-    .card-learn  .card-arrow { color: #b8d84c; }
-    .card-stats  .card-arrow { color: rgba(255,255,255,.35); }
-    .card-fragen .card-arrow { color: #f0a830; }
-
-    .card:hover .card-arrow { gap: 16px; }
+    .card:hover .card-arrow { gap: 14px; color: #8dae10; }
 
     .arrow-line {
-      width: 28px;
+      width: 24px;
       height: 1px;
       background: currentColor;
       position: relative;
@@ -226,20 +148,61 @@
       transform: rotate(45deg);
     }
 
-    .card:hover .arrow-line { width: 40px; }
+    .card:hover .arrow-line { width: 32px; }
+
+    /* ── QR STRIP (Clean & Soft) ── */
+    .qr-strip {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      background: #ffffff;
+      border: 1px solid #e3e8ee;
+      border-radius: 16px;
+      padding: 24px 32px;
+      max-width: 480px;
+      width: 100%;
+      margin-top: 12px;
+    }
+
+    .qr-box {
+      background: #f8fafc;
+      border: 1px solid #e3e8ee;
+      border-radius: 10px;
+      padding: 8px;
+      flex-shrink: 0;
+    }
+
+    .qr-box canvas, .qr-box img { display: block; }
+
+    .qr-label {
+      font-size: .68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: #8dae10;
+      margin-bottom: 4px;
+    }
+    .qr-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      color: #003560;
+      margin-bottom: 6px;
+    }
+    .qr-sub {
+      font-size: .82rem;
+      color: #6c7b88;
+      line-height: 1.5;
+    }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 860px) {
-      .main-grid { grid-template-columns: 1fr 1fr; max-width: 680px; }
-      .card-stats { grid-column: 1 / -1; min-height: 200px; }
+      .main-grid { grid-template-columns: 1fr; max-width: 480px; gap: 18px; }
+      .card { min-height: auto; }
     }
 
     @media (max-width: 560px) {
-      .page { padding: 40px 20px 56px; gap: 44px; }
-      .main-grid { grid-template-columns: 1fr; max-width: 420px; }
-      .card-stats { grid-column: auto; }
-      .card { min-height: 240px; padding: 36px 28px 32px; }
-      .qr-strip { max-width: 100%; }
+      .page { padding: 40px 16px; gap: 36px; }
+      .qr-strip { flex-direction: column; text-align: center; padding: 24px; }
     }
   </style>
 </head>
@@ -256,30 +219,30 @@
 
     <nav class="main-grid">
 
-      <a href="tabs/test/test.html" class="card card-test">
+      <a href="tabs/test/test.html" class="card">
         <span class="card-tag">Kurstest</span>
-        <h2 class="card-title">Multiple-<br>Choice-<br>Fragen</h2>
-        <p class="card-desc">Anonym einreichen nach den Präsentationen.</p>
+        <h2 class="card-title">Multiple-Choice Fragen</h2>
+        <p class="card-desc">Beantworte die Fragen anonym direkt nach den Präsentationen.</p>
         <span class="card-arrow">
           <span class="arrow-line"></span>
           Öffnen
         </span>
       </a>
 
-      <a href="tabs/learn/learn.html" class="card card-learn">
+      <a href="tabs/learn/learn.html" class="card">
         <span class="card-tag">Lernmodus</span>
-        <h2 class="card-title">Üben &<br>Vorbereiten</h2>
-        <p class="card-desc">Zufällige Fragen mit Sofort-Feedback.</p>
+        <h2 class="card-title">Üben &amp; Vorbereiten</h2>
+        <p class="card-desc">Trainiere dein Wissen vorab mit zufälligen Fragen und direktem Feedback.</p>
         <span class="card-arrow">
           <span class="arrow-line"></span>
           Öffnen
         </span>
       </a>
 
-      <a href="tabs/stats/stats.html" class="card card-stats">
+      <a href="tabs/stats/stats.html" class="card">
         <span class="card-tag">Nur Lehrende</span>
-        <h2 class="card-title">Live-<br>Auswertung</h2>
-        <p class="card-desc">Echtzeit-Statistik für den Beamer.</p>
+        <h2 class="card-title">Live-Auswertung</h2>
+        <p class="card-desc">Visualisiere die Testergebnisse deiner Lerngruppe in Echtzeit auf dem Beamer.</p>
         <span class="card-arrow">
           <span class="arrow-line"></span>
           Öffnen
@@ -294,9 +257,9 @@
         <canvas id="qrCanvas"></canvas>
       </div>
       <div class="qr-text">
-        <div class="qr-label">Direkt zum Test</div>
-        <div class="qr-title">QR-Code scannen</div>
-        <div class="qr-sub">Führt direkt zur Kurstest-Seite – kein URL-Eintippen nötig.</div>
+        <div class="qr-label">Direktverbindung</div>
+        <div class="qr-title">Smartphone-Check</div>
+        <div class="qr-sub">Scanne den Code mit deinem Handy, um sofort am Kurstest teilzunehmen.</div>
       </div>
     </div>
 
@@ -313,11 +276,10 @@
         text: testUrl,
         width: 80,
         height: 80,
-        colorDark: '#000000',
-        colorLight: '#ffffff',
+        colorDark: '#003560',
+        colorLight: '#f8fafc',
         correctLevel: QRCode.CorrectLevel.M
       });
-      // Remove the placeholder canvas, QRCode lib inserts its own
       canvas.remove();
     });
   </script>
