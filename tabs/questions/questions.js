@@ -1,5 +1,5 @@
 /* =============================================
-   fragen.js  –  Anonyme Fragen einreichen
+   questions.js  –  Anonyme Fragen einreichen
    ============================================= */
 
 const input   = document.getElementById('frageInput');

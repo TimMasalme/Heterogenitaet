@@ -156,3 +156,11 @@
 .hint-icon { font-size: 1rem; flex-shrink: 0; }
 
 .hidden { display: none !important; }
+
+/* ── MOBILE FINE-TUNING (≤480px) ──────────────── */
+@media (max-width: 480px) {
+  .page-title      { font-size: 1.8rem; }
+  .frage-form      { padding: 16px 14px 12px; }
+  .fragen-intro    { font-size: .88rem; }
+  .submit-btn      { width: 100%; text-align: center; }
+}

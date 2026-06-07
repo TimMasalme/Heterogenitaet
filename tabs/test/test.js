@@ -123,10 +123,13 @@ async function submitAll() {
   const btn = document.querySelector(".submit-btn");
   if (btn) { btn.disabled = true; btn.textContent = "Wird gesendet…"; }
 
+  const offeneFrageText = document.getElementById("offeneFrage")?.value?.trim() || "";
+
   const payload = {
-    sessionId:  SESSION_ID,
-    timestamp:  window._serverTimestamp(),
-    antworten:  fragen.map((f, i) => ({
+    sessionId:    SESSION_ID,
+    timestamp:    window._serverTimestamp(),
+    offeneFrage:  offeneFrageText || null,
+    antworten:    fragen.map((f, i) => ({
       frageId:  f.id,
       thema:    f.thema,
       gewählt:  antworten[i] ?? null,
