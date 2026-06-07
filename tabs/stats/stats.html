@@ -3,16 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LdL · Auswertung · Heterogenität</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../../meta/styles.css" />
+  <title>LdL · Auswertung · Heterogenität</title>  <link rel="stylesheet" href="../../meta/styles.css" />
   <link rel="stylesheet" href="../../meta/components/components.css" />
   <link rel="stylesheet" href="stats.css" />
 </head>
 <body class="app-shell stats-page">
 
   <div id="app-topbar"></div>
+
+  <!-- Firebase-Verbindungsfehler (wird per JS eingeblendet) -->
+  <div id="firebaseErrorBanner" style="
+    display:none; background:#C1440E; color:#fff;
+    text-align:center; padding:10px 16px;
+    font-family:'DM Sans',sans-serif; font-size:.88rem;
+    position:sticky; top:66px; z-index:100;
+  "></div>
 
   <div class="layout">
     <div class="sidebar-slot"></div>

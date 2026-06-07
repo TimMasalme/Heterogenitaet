@@ -3,16 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LdL · Kurstest · Heterogenität</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../../meta/styles.css" />
+  <title>LdL · Kurstest · Heterogenität</title>  <link rel="stylesheet" href="../../meta/styles.css" />
   <link rel="stylesheet" href="../../meta/components/components.css" />
   <link rel="stylesheet" href="test.css" />
 </head>
 <body class="app-shell">
 
   <div id="app-topbar"></div>
+
+  <!-- Firebase-Verbindungsfehler (wird per JS eingeblendet) -->
+  <div id="firebaseErrorBanner" style="
+    display:none; background:#C1440E; color:#fff;
+    text-align:center; padding:10px 16px;
+    font-family:'DM Sans',sans-serif; font-size:.88rem;
+    position:sticky; top:66px; z-index:100;
+  "></div>
 
   <div class="layout">
     <div class="sidebar-slot"></div>
@@ -46,8 +51,7 @@
     <div class="overlay-card">
       <div class="done-check">✓</div>
       <h2>Übermittelt</h2>
-      <p>Die Antworten wurden gespeichert.</p>
-      <button class="overlay-btn" onclick="resetTest()">Nochmal mitmachen</button>
+      <p>Deine Antworten wurden gespeichert.<br>Warte auf die gemeinsame Auswertung.</p>
     </div>
   </div>
 

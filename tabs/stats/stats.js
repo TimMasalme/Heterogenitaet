@@ -278,7 +278,16 @@ function renderDistrib(stats, fragen) {
 }
 
 /* ─── RESET ─────────────────────────────────── */
-window.confirmReset = async function () {
+// PIN für "Ergebnisse löschen" – verhindert versehentliches Löschen durch Schüler
+const RESET_PIN = "1234"; // ← hier deinen PIN setzen
+
+window.confirmResetWithPin = async function () {
+  const eingabe = prompt("PIN eingeben:");
+  if (eingabe === null) return; // Abbrechen
+  if (eingabe !== RESET_PIN) {
+    alert("Falscher PIN.");
+    return;
+  }
   if (!confirm("Alle Testergebnisse wirklich löschen? (Für neue Kursrunde)")) return;
 
   const db         = window._db;

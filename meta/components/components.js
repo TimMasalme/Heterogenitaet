@@ -54,7 +54,7 @@
       <div class="topbar-right">
         <div class="live-dot-anim"></div>
         <span class="live-label-text">Live</span>
-        <button class="btn-topbar-danger" onclick="confirmReset()">Ergebnisse löschen</button>
+        <button class="btn-topbar-danger" onclick="confirmResetWithPin()">Ergebnisse löschen</button>
       </div>` : '';
 
     return `
