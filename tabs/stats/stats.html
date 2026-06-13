@@ -68,9 +68,6 @@
             <div id="fragenList">
               <div class="fragen-empty" id="fragenEmpty">Noch keine Fragen eingereicht.</div>
             </div>
-            <div class="fragen-actions" id="fragenActions" style="display:none">
-              <button class="btn-danger-sm" onclick="confirmDeleteFragen()">Alle Fragen löschen</button>
-            </div>
           </section>
         </div><!-- /statsContent -->
 
@@ -80,7 +77,8 @@
 
   <div id="app-footer"></div>
 
-  <script type="module" src="../../meta/firebase.js"></script>
+  <script type="module" src="../../meta/firebase.js"
+          onerror="var b=document.getElementById('firebaseErrorBanner');if(b){b.textContent='⚠ Server nicht erreichbar. Bitte WLAN/Netz prüfen und Seite neu laden.';b.style.display='block';}"></script>
   <script src="../../meta/questions.js"></script>
   <script src="stats.js"></script>
   <script src="../../meta/components/components.js"></script>

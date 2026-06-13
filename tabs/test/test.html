@@ -46,7 +46,7 @@
             <textarea
               id="offeneFrage"
               class="offene-frage-textarea"
-              placeholder="z.B. „Den Pygmalion-Effekt habe ich noch nicht ganz verstanden …""
+              placeholder="z.B. „Den Pygmalion-Effekt habe ich noch nicht ganz verstanden …“"
               maxlength="400"
               rows="3"
             ></textarea>
@@ -68,7 +68,8 @@
     </div>
   </div>
 
-  <script type="module" src="../../meta/firebase.js"></script>
+  <script type="module" src="../../meta/firebase.js"
+          onerror="var b=document.getElementById('firebaseErrorBanner');if(b){b.textContent='⚠ Server nicht erreichbar. Bitte WLAN/Netz prüfen und Seite neu laden.';b.style.display='block';}"></script>
   <script src="../../meta/questions.js"></script>
   <script src="test.js"></script>
   <script src="../../meta/components/components.js"></script>

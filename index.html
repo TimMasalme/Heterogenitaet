@@ -272,15 +272,23 @@
     window.addEventListener('DOMContentLoaded', () => {
       const testUrl = window.location.origin + window.location.pathname.replace('index.html', '').replace(/\/$/, '') + '/tabs/test/test.html';
       const canvas = document.getElementById('qrCanvas');
-      new QRCode(canvas.parentElement, {
-        text: testUrl,
-        width: 80,
-        height: 80,
-        colorDark: '#003560',
-        colorLight: '#f8fafc',
-        correctLevel: QRCode.CorrectLevel.M
-      });
-      canvas.remove();
+      try {
+        if (typeof QRCode === 'undefined') throw new Error('QRCode-Bibliothek nicht geladen');
+        new QRCode(canvas.parentElement, {
+          text: testUrl,
+          width: 80,
+          height: 80,
+          colorDark: '#003560',
+          colorLight: '#f8fafc',
+          correctLevel: QRCode.CorrectLevel.M
+        });
+        canvas.remove();
+      } catch (err) {
+        // Fallback: klickbarer Link, falls das QR-CDN blockiert/langsam ist
+        console.warn('QR-Code konnte nicht erzeugt werden:', err);
+        canvas.parentElement.innerHTML =
+          `<a href="${testUrl}" style="display:block;font-size:.68rem;line-height:1.4;word-break:break-all;color:#003560;text-decoration:none;max-width:120px;">${testUrl}</a>`;
+      }
     });
   </script>
   <script src="meta/components/components.js"></script>

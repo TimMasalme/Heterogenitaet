@@ -138,10 +138,16 @@ async function submitAll() {
   };
 
   try {
-    await window._addDoc(
-      window._collection(window._db, "ergebnisse"),
-      payload
-    );
+    // Timeout-Guard: bei langsamem WLAN nicht ewig auf "Wird gesendet…" hängen bleiben
+    await Promise.race([
+      window._addDoc(
+        window._collection(window._db, "ergebnisse"),
+        payload
+      ),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("timeout")), 15000)
+      )
+    ]);
 
     // Guard setzen – ab jetzt permanent für diese Session
     sessionStorage.setItem(SESSION_KEY, "1");

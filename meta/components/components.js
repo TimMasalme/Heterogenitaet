@@ -113,6 +113,47 @@
     return `<div id="globalToast" class="global-toast"></div>`;
   }
 
+  /* ─── MOBILE-NAV (Drawer + Toggle unten links) ── */
+  function renderMobileNav(tab) {
+    const root = rootPrefix();
+    const items = NAV.map(n => `
+      <a href="${root}${n.path}" class="mobile-nav-item ${n.id === tab ? 'active' : ''}">
+        <span class="mobile-nav-label">${n.label}</span>
+        <span class="mobile-nav-sub">${n.sub}</span>
+      </a>`).join('');
+
+    return `
+      <button id="mobileNavToggle" class="mobile-nav-toggle" aria-label="Navigation öffnen" aria-expanded="false">
+        <span class="mnt-bar"></span><span class="mnt-bar"></span><span class="mnt-bar"></span>
+      </button>
+      <div id="mobileNavBackdrop" class="mobile-nav-backdrop"></div>
+      <nav id="mobileNavDrawer" class="mobile-nav-drawer" aria-hidden="true">
+        <div class="mobile-nav-head">Navigation</div>
+        ${items}
+      </nav>`;
+  }
+
+  function setupMobileNav() {
+    const toggle   = document.getElementById('mobileNavToggle');
+    const drawer   = document.getElementById('mobileNavDrawer');
+    const backdrop = document.getElementById('mobileNavBackdrop');
+    if (!toggle || !drawer || !backdrop) return;
+
+    function setOpen(open) {
+      document.body.classList.toggle('mobile-nav-open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+    }
+
+    toggle.addEventListener('click', () =>
+      setOpen(!document.body.classList.contains('mobile-nav-open'))
+    );
+    backdrop.addEventListener('click', () => setOpen(false));
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+  }
+
   /* ─── HAUPT-INIT ─────────────────────────── */
   window.initComponents = function (options) {
     options = options || {};
@@ -134,6 +175,12 @@
     // Toast
     if (!document.getElementById('globalToast')) {
       document.body.insertAdjacentHTML('beforeend', renderToast());
+    }
+
+    // Mobile-Nav (Drawer + Toggle) – nur einmal einfügen
+    if (!document.getElementById('mobileNavToggle')) {
+      document.body.insertAdjacentHTML('beforeend', renderMobileNav(tab));
+      setupMobileNav();
     }
   };
 
