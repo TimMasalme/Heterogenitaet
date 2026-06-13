@@ -124,6 +124,8 @@ const FRAGEN = [
     richtig: 1
   },
 
+
+  
   // ── EXTRA-POOL (Lernmodus) ───────────────────
   {
     id: "e1",

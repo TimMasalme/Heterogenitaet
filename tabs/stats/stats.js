@@ -280,7 +280,7 @@ function renderDistrib(stats, fragen) {
 
 /* ─── RESET ─────────────────────────────────── */
 // PIN für "Ergebnisse löschen" – verhindert versehentliches Löschen durch Schüler
-const RESET_PIN = "1234"; // ← hier deinen PIN setzen
+const RESET_PIN = "270503";
 
 window.confirmResetWithPin = async function () {
   const eingabe = prompt("PIN eingeben:");
